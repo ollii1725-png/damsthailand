@@ -73,34 +73,36 @@
                     </button>
 
                     <!-- รายการเมนูดรอปดาวน์ (แสดงเมื่อเอาเมาส์ไปชี้) -->
-                    <div class="absolute right-0 mt-2 w-56 bg-slate-800/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-700/80 py-2 hidden group-hover:block transition duration-200 z-50">
-                        <div class="px-3 py-1.5 border-b border-slate-700/60 mb-1">
-                            <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">โปรเจกต์อื่น ๆ</p>
+                    <div class="absolute right-0 top-full pt-2 w-56 hidden group-hover:block transition duration-200 z-50">
+                        <div class="bg-slate-800/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-700/80 py-2">
+                            <div class="px-3 py-1.5 border-b border-slate-700/60 mb-1">
+                                <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">โปรเจกต์ในเครือ (Ecosystem)</p>
+                            </div>
+
+                            <!-- 1. เว็บเขื่อน (หน้าปัจจุบัน) -->
+                            <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-cyan-300 bg-cyan-950/40 font-semibold border-l-2 border-cyan-400">
+                                <i class="fa-solid fa-water w-4 text-center"></i>
+                                <span>ติดตามน้ำในเขื่อน (Dam Tracker)</span>
+                            </a>
+
+                            <!-- 2. ลิงก์เว็บติดตามดวงอาทิตย์ -->
+                            <a href="https://ollii1725-png.github.io/sun-map/" target="_blank" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-300 hover:text-amber-300 hover:bg-slate-700/50 transition">
+                                <i class="fa-solid fa-sun w-4 text-center text-amber-400"></i>
+                                <span>ติดตามดวงอาทิตย์ (Sun Tracker)</span>
+                            </a>
+
+                            <!-- 3. โปรเจกต์อนาคต (พายุ/เรดาร์ฝน) -->
+                            <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-400 hover:bg-slate-700/30 transition opacity-75 cursor-not-allowed" title="กำลังพัฒนา">
+                                <i class="fa-solid fa-cloud-bolt w-4 text-center text-indigo-400"></i>
+                                <span>เรดาร์พายุและฝน (Soon)</span>
+                            </a>
+
+                            <!-- 4. โปรเจกต์อนาคต (ดัชนี PM2.5) -->
+                            <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-400 hover:bg-slate-700/30 transition opacity-75 cursor-not-allowed" title="กำลังพัฒนา">
+                                <i class="fa-solid fa-smog w-4 text-center text-rose-400"></i>
+                                <span>ดัชนีฝุ่น PM2.5 (Soon)</span>
+                            </a>
                         </div>
-
-                        <!-- 1. เว็บเขื่อน (หน้าปัจจุบัน) -->
-                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-cyan-300 bg-cyan-950/40 font-semibold border-l-2 border-cyan-400">
-                            <i class="fa-solid fa-water w-4 text-center"></i>
-                            <span>ติดตามน้ำในเขื่อน (Dam Tracker)</span>
-                        </a>
-
-                        <!-- 2. ลิงก์เว็บติดตามดวงอาทิตย์ -->
-                        <a href="https://ollii1725-png.github.io/sun-map/" target="_blank" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-300 hover:text-amber-300 hover:bg-slate-700/50 transition">
-                            <i class="fa-solid fa-sun w-4 text-center text-amber-400"></i>
-                            <span>ติดตามดวงอาทิตย์ (Sun Tracker)</span>
-                        </a>
-
-                        <!-- 3. โปรเจกต์อนาคต (พายุ/เรดาร์ฝน) -->
-                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-400 hover:bg-slate-700/30 transition opacity-75 cursor-not-allowed" title="กำลังพัฒนา">
-                            <i class="fa-solid fa-cloud-bolt w-4 text-center text-indigo-400"></i>
-                            <span>เรดาร์พายุและฝน (Soon)</span>
-                        </a>
-
-                        <!-- 4. โปรเจกต์อนาคต (ดัชนี PM2.5) -->
-                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-400 hover:bg-slate-700/30 transition opacity-75 cursor-not-allowed" title="กำลังพัฒนา">
-                            <i class="fa-solid fa-smog w-4 text-center text-rose-400"></i>
-                            <span>ดัชนีฝุ่น PM2.5 (Soon)</span>
-                        </a>
                     </div>
                 </div>
 
@@ -138,7 +140,7 @@
             <!-- ข้อความช่วยเหลือสั้นๆ ด้านขวา -->
             <div class="text-xs text-slate-500 hidden lg:flex items-center gap-1.5">
                 <i class="fa-solid fa-circle-info text-blue-500"></i>
-                    <span>คลิกเลือกหมุดบนแผนที่หรือการ์ดเพื่อดูรายละเอียดเพิ่มเติม</span>
+                    <span>เนื่องจากดึงข้อมูลจาก api กรมชลประทาน ข้อมูลจะครบทุกสถานี เวลา 09:00น.</span>
             </div>
         </div>
 
