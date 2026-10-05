@@ -26,7 +26,8 @@
 
     <!-- 10. กำหนดสไตล์ตั้งต้น ให้ทั้งหน้าเว็บใช้ฟอนต์ Kanit -->
      <style>
-        body{
+        body
+            {
             font-family: 'Noto Sans Thai' , sans-serif;
             background-color: #f8fafc;
         }
@@ -54,23 +55,32 @@
              </div>
 
              <!-- 2. ส่วนแสดงสถานะอัปเดตข้อมูล และ ปุ่มจำลองสถานการณ์น้ำ -->
-              <div class="flex items-center space-x-2 sm:space-x-3 text-xs sm:text-sm">
+              <div class="flex items-center space-x-1.5 sm:space-x-2 text-xs">
                 <!-- แสดงเวลาอัปเดตล่าสุด -->
-                 <div class="bg-black/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span class="text-cyan-50 font-medium">อัพเดท: <span id="last-update-time">วันนี้ 08:00 น.</span></span>
-                 </div>
+                <div class="bg-black/20 backdrop-blur-md px-2.5 sm:px-3 py-1.5 rounded-full border border-white/20 flex items-center gap-1.5 shrink-0">
+                    <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-cyan-50 font-medium whitespace-nowrap">อัปเดต: <span id="last-update-time">วันนี้ 08:00 น.</span></span>
+                </div>
 
-                 <!-- ปุ่มจำลองฝนตกหนัก/แล้ง (สำหรับทดสอบการเปลี่ยนสีและเปอร์เซ็นต์น้ำ) -->
-                  <button id="sim-rain-btn" onclick="simulateWaterChange(10)" class="bg-white/10 hover:bg-white/25 border border-white/30 text-white px-3 py-1.5 rounded-lg transition duration-200 flex items-center gap-1.5 active:scale-95" title="จำลองปริมาณน้ำฝนเพิ่มขึ้น">
+                <!-- ปุ่ม 1: จำลองฝนตก -->
+                <button id="sim-rain-btn" onclick="simulateWaterChange(10)" class="bg-white/10 hover:bg-white/25 border border-white/30 text-white px-2.5 py-1.5 rounded-lg transition duration-200 flex items-center gap-1 active:scale-95 whitespace-nowrap" title="จำลองปริมาณน้ำฝนเพิ่มขึ้น">
                     <i class="fa-solid fa-cloud-showers-heavy text-cyan-200"></i>
-                    <span class="hidden md:inline">จำลองฝนตก (+10%)</span>
-                  </button>
-                  <button id="sim-drought-btn" onclick="simulateWaterChange(-10)" class="bg-white/10 hover:bg-white/25 border border-white/30 text-white px-3 py-1.5 rounded-lg transition duration-200 flex items-center gap-1.5 active:scale-95" title="จำลองปริมาณฝนลดลง">
+                    <span class="hidden lg:inline">ฝนตก (+10%)</span>
+                </button>
+
+                <!-- ปุ่ม 2: จำลองภัยแล้ง -->
+                <button id="sim-drought-btn" onclick="simulateWaterChange(-10)" class="bg-white/10 hover:bg-white/25 border border-white/30 text-white px-2.5 py-1.5 rounded-lg transition duration-200 flex items-center gap-1 active:scale-95 whitespace-nowrap" title="จำลองปริมาณฝนลดลง">
                     <i class="fa-solid fa-sun text-amber-300"></i>
-                    <span class="hidden md:inline">จำลองภัยแล้ง (-10)</span>
-                  </button>
-              </div>
+                    <span class="hidden lg:inline">ภัยแล้ง (-10%)</span>
+                </button>
+
+                <!-- ปุ่ม 3: รีเซ็ตข้อมูล -->
+                <button id="sim-reset-btn" onclick="resetSimulatedData()" class="bg-white/10 hover:bg-rose-500/80 border border-white/30 text-white px-2.5 py-1.5 rounded-lg transition duration-200 flex items-center gap-1 active:scale-95 whitespace-nowrap" title="รีเซ็ตกลับเป็นข้อมูลจริง">
+                    <i class="fa-solid fa-rotate-right text-rose-200"></i>
+                    <span class="hidden lg:inline">รีเซ็ต</span>
+                </button>
+
+            </div>
         </div>
      </header>
     
@@ -380,17 +390,63 @@
          </div>
      </div>
 
-    <!-- 2. ส่วนท้ายสุดของเว็บไซต์ ( Footer ) -->
-    <footer class="bg-slate-900 text-slate-400 text-xs py-6 mt-auto border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-            <p class="flex items-center justify-center gap-2 text-slate-300 font-medium">
-                <i class="fa-solid fa-water text-cyan-400"></i>
-                ระบบติดตามสถานการณ์น้ำในเขื่อนทั่วประเทศไทย (Dam Tracker)
-            </p>
-            <p class="text-slate-500">พัฒนาด้วย HTML5, Tailwind CSS, Leaflet.js และ Chart.js</p>
-            <p class="text-slate-500">by Mr.Sumet Prapasathit</p>
+     <!-- 2. ส่วนท้ายสุดของเว็บไซต์ ( Footer ) -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-5 mt-auto border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            
+            <!-- ด้านล่างซ้าย: ข้อความลิขสิทธิ์ และ เครดิตผู้พัฒนา -->
+            <div class="text-center sm:text-left space-y-1">
+                <p class="flex items-center justify-center sm:justify-start gap-2 text-slate-300 font-medium">
+                    <i class="fa-solid fa-water text-cyan-400"></i>
+                    ระบบติดตามสถานการณ์น้ำในเขื่อนทั่วประเทศไทย โดยใช้ข้อมูลจาก กรมชลประทาน
+                </p>
+                <p class="text-slate-500 text-[11px]">
+                    Developed by Mr.Sumet Prapasathit | ollii1725@gmail.com
+                </p>
+            </div>
+
+            <!-- ด้านล่างขวา: ปุ่มซัพพอร์ตเรา ( Support Us / Donate ) -->
+            <div class="shrink-0">
+                <button onclick="openDonateModal()" class="bg-gradient-to-r from-amber-500 via-rose-500 to-pink-500 hover:from-amber-600 hover:to-pink-600 text-white font-medium text-xs px-4 py-2 rounded-xl shadow-md transition duration-200 flex items-center gap-2 active:scale-95 border border-white/20" title="ร่วมสนับสนุนผู้พัฒนาเว็บไซต์">
+                    <i class="fa-solid fa-heart text-white animate-pulse"></i>
+                    <span>ซัพพอร์ตเรา (Donate)</span>
+                </button>
+            </div>
+
         </div>
-    </footer> 
+
+        <!-- Modal ซัพพอร์ต / บริจาค -->
+        <div id="donate-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden text-center p-6 space-y-4 relative border border-slate-100">
+                <!-- ปุ่มปิด [X] -->
+                <button onclick="closeDonateModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+
+                <div class="w-12 h-12 bg-rose-100 text-rose-500 rounded-2xl flex items-center justify-center text-2xl mx-auto">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800">สนับสนุนการพัฒนา</h3>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                        เงินบริจาคของท่านจะเป็นกำลังใจในการพัฒนาฟีเจอร์ใหม่ๆ ครับ
+                    </p>
+                </div>
+
+                <!-- รูป PromptPay QR Code (นำรูปของคุณมาเปลี่ยนที่ src) -->
+                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 inline-block">
+                    <img src="https://drive.google.com/file/d/1jh3-gqtSdfnq3qdjjEZLG4M3b-RwpIWo/view?usp=sharing" alt="PromptPay QR Code" class="w-48 h-48 rounded-xl mx-auto shadow-sm">
+                    <p class="text-[11px] font-semibold text-slate-600 mt-2">พร้อมเพย์ / PromptPay</p>
+                </div>
+
+                <button onclick="closeDonateModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium py-2.5 rounded-xl transition">
+                    ปิดหน้าต่าง
+                </button>
+            </div>
+        </div>
+    </footer>
+     
     </main>
     <!-- ==================== ส่วนที่ 7: ชุดข้อมูลเขื่อน (JAVASCRIPT DATASET) ==================== -->
     <!-- ==================== ส่วนที่ 7 & 8: ดึงข้อมูลจาก API กรมชลประทาน & ควบคุมระบบ ==================== -->
@@ -503,7 +559,7 @@
                     textColor: "text-red-600",
                     hexColor: "#ef4444",
                     filterGroup: "critical-low",
-                    recommendation: "ระดับน้ำอยู่ในเกณฑ์น้อยวิกฤต ต้องงดการส่งน้ำเพื่อการเกษตรกรรมรองรับฤดูแล้ง"
+                    recommendation: "ระดับน้ำอยู่ในเกณฑ์น้อยวิกฤต"
                 };
             } else if (percent <= 50) {
                 return {
@@ -512,7 +568,7 @@
                     textColor: "text-amber-600",
                     hexColor: "#f59e0b",
                     filterGroup: "warning-low",
-                    recommendation: "ปริมาณน้ำอยู่ในเกณฑ์น้อย ควรวางแผนประหยัดน้ำและรณรงค์ใช้น้ำอย่างคุ้มค่า"
+                    recommendation: "ปริมาณน้ำอยู่ในเกณฑ์น้อย"
                 };
             } else if (percent <= 70) {
                 return {
@@ -521,7 +577,7 @@
                     textColor: "text-emerald-600",
                     hexColor: "#10b981",
                     filterGroup: "normal",
-                    recommendation: "ระดับน้ำอยู่ในเกณฑ์ดี มีความสมดุล สามารถสนับสนุนการเกษตรและอุปโภคบริโภคได้ตามปกติ"
+                    recommendation: "ระดับน้ำอยู่ในเกณฑ์ดี "
                 };
             } else if (percent <= 85) {
                 return {
@@ -530,7 +586,7 @@
                     textColor: "text-yellow-600",
                     hexColor: "#eab308",
                     filterGroup: "high",
-                    recommendation: "ระดับน้ำเริ่มสูงขึ้น ควรติดตามพาดพานสภาพอากาศอย่างใกล้ชิด"
+                    recommendation: "ระดับน้ำเริ่มสูงขึ้น "
                 };
             } else if (percent <= 100) {
                 return {
@@ -539,7 +595,7 @@
                     textColor: "text-amber-700",
                     hexColor: "#d97706",
                     filterGroup: "very-high",
-                    recommendation: "ระดับน้ำสูงเข้าเขตเฝ้าระวังน้ำมาก ต้องเพิ่มการระบายน้ำอย่างเป็นขั้นตอน"
+                    recommendation: "ระดับน้ำสูงเข้าเขตเฝ้าระวังน้ำมาก "
                 };
             } else {
                 return {
@@ -548,7 +604,7 @@
                     textColor: "text-red-700",
                     hexColor: "#dc2626",
                     filterGroup: "overflow",
-                    recommendation: "ระดับน้ำเกินความจุอ่างเก็บน้ำ เร่งระบายน้ำผ่านอาคารระบายน้ำล้น (Spillway) ทันที"
+                    recommendation: "ระดับน้ำเกินความจุอ่างเก็บน้ำ "
                 };
             }
         }
@@ -866,6 +922,22 @@
 
             applyFilters();
         }
+
+        // ฟังก์ชันรีเซ็ตค่ากลับเป็นข้อมูลจริงจาก API
+        function resetSimulatedData() {
+            // โหลดข้อมูลจริงสดๆ จาก API กรมชลประทานอีกครั้ง
+            fetchRIDData();
+        }
+
+        // ฟังก์ชันเปิด-ปิด หน้าต่างบริจาค
+        function openDonateModal() {
+            document.getElementById('donate-modal').classList.remove('hidden');
+        }
+
+        function closeDonateModal() {
+            document.getElementById('donate-modal').classList.add('hidden');
+        }
+
     </script>
 
    
