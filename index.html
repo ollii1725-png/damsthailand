@@ -54,31 +54,57 @@
                 </div>
              </div>
 
-             <!-- 2. ส่วนแสดงสถานะอัปเดตข้อมูล และ ปุ่มจำลองสถานการณ์น้ำ -->
-              <div class="flex items-center space-x-1.5 sm:space-x-2 text-xs">
+             <!-- 2. ส่วนแสดงสถานะอัปเดตข้อมูล และ Dropdown เครื่องมือสภาพอากาศ -->
+            <div class="flex items-center space-x-2 text-xs">
+                
                 <!-- แสดงเวลาอัปเดตล่าสุด -->
                 <div class="bg-black/20 backdrop-blur-md px-2.5 sm:px-3 py-1.5 rounded-full border border-white/20 flex items-center gap-1.5 shrink-0">
                     <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span class="text-cyan-50 font-medium whitespace-nowrap">อัปเดต: <span id="last-update-time">วันนี้ 08:00 น.</span></span>
                 </div>
 
-                <!-- ปุ่ม 1: จำลองฝนตก -->
-                <button id="sim-rain-btn" onclick="simulateWaterChange(10)" class="bg-white/10 hover:bg-white/25 border border-white/30 text-white px-2.5 py-1.5 rounded-lg transition duration-200 flex items-center gap-1 active:scale-95 whitespace-nowrap" title="จำลองปริมาณน้ำฝนเพิ่มขึ้น">
-                    <i class="fa-solid fa-cloud-showers-heavy text-cyan-200"></i>
-                    <span class="hidden lg:inline">ฝนตก (+10%)</span>
-                </button>
+                <!-- Dropdown Menu รวมโปรเจกต์ในเครือ (วางแทนที่ปุ่มจำลองเดิม) -->
+                <div class="relative group">
+                    <!-- ปุ่มหลักสำหรับกดเปิดเมนู -->
+                    <button class="bg-white/10 hover:bg-white/25 border border-white/30 text-white px-2.5 sm:px-3 py-1.5 rounded-lg transition duration-200 flex items-center gap-1.5 font-medium active:scale-95 whitespace-nowrap" title="เครื่องมือและโปรเจกต์สภาพอากาศ">
+                        <i class="fa-solid fa-cloud-sun text-amber-300 text-sm"></i>
+                        <span class="hidden sm:inline">เครื่องมือสภาพอากาศ</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-300 transition-transform group-hover:rotate-180"></i>
+                    </button>
 
-                <!-- ปุ่ม 2: จำลองภัยแล้ง -->
-                <button id="sim-drought-btn" onclick="simulateWaterChange(-10)" class="bg-white/10 hover:bg-white/25 border border-white/30 text-white px-2.5 py-1.5 rounded-lg transition duration-200 flex items-center gap-1 active:scale-95 whitespace-nowrap" title="จำลองปริมาณฝนลดลง">
-                    <i class="fa-solid fa-sun text-amber-300"></i>
-                    <span class="hidden lg:inline">ภัยแล้ง (-10%)</span>
-                </button>
+                    <!-- รายการเมนูดรอปดาวน์ (แสดงเมื่อเอาเมาส์ไปชี้) -->
+                    <div class="absolute right-0 mt-2 w-56 bg-slate-800/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-700/80 py-2 hidden group-hover:block transition duration-200 z-50">
+                        <div class="px-3 py-1.5 border-b border-slate-700/60 mb-1">
+                            <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">โปรเจกต์อื่น ๆ</p>
+                        </div>
 
-                <!-- ปุ่ม 3: รีเซ็ตข้อมูล -->
-                <button id="sim-reset-btn" onclick="resetSimulatedData()" class="bg-white/10 hover:bg-rose-500/80 border border-white/30 text-white px-2.5 py-1.5 rounded-lg transition duration-200 flex items-center gap-1 active:scale-95 whitespace-nowrap" title="รีเซ็ตกลับเป็นข้อมูลจริง">
-                    <i class="fa-solid fa-rotate-right text-rose-200"></i>
-                    <span class="hidden lg:inline">รีเซ็ต</span>
-                </button>
+                        <!-- 1. เว็บเขื่อน (หน้าปัจจุบัน) -->
+                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-cyan-300 bg-cyan-950/40 font-semibold border-l-2 border-cyan-400">
+                            <i class="fa-solid fa-water w-4 text-center"></i>
+                            <span>ติดตามน้ำในเขื่อน (Dam Tracker)</span>
+                        </a>
+
+                        <!-- 2. ลิงก์เว็บติดตามดวงอาทิตย์ -->
+                        <a href="https://ollii1725-png.github.io/sun-map/" target="_blank" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-300 hover:text-amber-300 hover:bg-slate-700/50 transition">
+                            <i class="fa-solid fa-sun w-4 text-center text-amber-400"></i>
+                            <span>ติดตามดวงอาทิตย์ (Sun Tracker)</span>
+                        </a>
+
+                        <!-- 3. โปรเจกต์อนาคต (พายุ/เรดาร์ฝน) -->
+                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-400 hover:bg-slate-700/30 transition opacity-75 cursor-not-allowed" title="กำลังพัฒนา">
+                            <i class="fa-solid fa-cloud-bolt w-4 text-center text-indigo-400"></i>
+                            <span>เรดาร์พายุและฝน (Soon)</span>
+                        </a>
+
+                        <!-- 4. โปรเจกต์อนาคต (ดัชนี PM2.5) -->
+                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-400 hover:bg-slate-700/30 transition opacity-75 cursor-not-allowed" title="กำลังพัฒนา">
+                            <i class="fa-solid fa-smog w-4 text-center text-rose-400"></i>
+                            <span>ดัชนีฝุ่น PM2.5 (Soon)</span>
+                        </a>
+                    </div>
+                </div>
+
+                
 
             </div>
         </div>
