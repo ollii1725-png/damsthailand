@@ -11,44 +11,33 @@
     <!-- Facebook & LINE Open Graph -->
     <meta property="og:title" content="ระบบติดตามสถานการณ์น้ำในเขื่อนทั่วไทย (Dam Tracker)">
     <meta property="og:description" content="เช็กระดับน้ำ Real-time บนแผนที่ปฏิสัมพันธ์ ดูปริมาณน้ำล้นและน้ำแล้งได้ทันที">
-    <meta property="og:image" content="https://ollii1725-png.github.io/damsthailand/preview-cover.png"> <!-- รูปแคปหน้าจอสวยๆ ของเว็บ -->
+    <meta property="og:image" content="https://ollii1725-png.github.io/damsthailand/preview-cover.png">
     <meta property="og:type" content="website">
 
-
-    <!-- 4. นำเข้า Tailwind CSS ช่วยในการจัดสไตล์หน้าเว็บได้ง่ายด้วย Utility Classes -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- 5. นำเข้า FontAwesome สำหรับไอคอนน่ารักๆ เช่น น้ำ หยดน้ำ แผนที่ ฯลฯ -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- 6. นำเข้า Font ภาษาไทย "Noto Sans Thai" จาก Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- 7. นำเข้า CSS ของ Leaflet.js สำหรับสร้างแผนที่ -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
-    <!-- 8. นำเข้า JavaScript ของ Leaflet.js สำหรับควบคุมแผนที่ -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <!-- 9. นำเข้า Chart.js สำหรับวาดกราฟสถิติ -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- 10. กำหนดสไตล์ตั้งต้น ให้ทั้งหน้าเว็บใช้ฟอนต์ Kanit -->
-     <style>
-        body
-            {
-            font-family: 'Noto Sans Thai' , sans-serif;
+    <style>
+        body, .leaflet-container, .custom-map-marker {
+            font-family: 'Noto Sans Thai', sans-serif !important;
             background-color: #f8fafc;
         }
-     </style>
 
+        .leaflet-div-icon,
+        .custom-map-marker {
+            background: none !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex-col">
-    <!-- ==================== ส่วนที่ 2: ส่วนหัวของเว็บ (NAVBAR & HEADER) ==================== -->
-     <header class="bg-gradient-to-r from-blue-700 via-sky-600 to-cyan-600 text-white shadow-lg sticky top-0 z-40">
+    <header class="bg-gradient-to-r from-blue-700 via-sky-600 to-cyan-600 text-white shadow-lg sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-3">
-           
-            <!-- 1. โลโก้ และ ชื่อระบบ -->
              <div class="flex items-center space-x-3">
                 <div class="bg-white/20 p-2.5 rounded-2xl backdrop-blur-sm border border-white/30 flex items-center justify-center text-white">
                     <i class="fa-solid font-bold fa-water text-2xl"></i>
@@ -63,50 +52,40 @@
                 </div>
              </div>
 
-             <!-- 2. ส่วนแสดงสถานะอัปเดตข้อมูล และ Dropdown เครื่องมือสภาพอากาศ -->
             <div class="flex items-center space-x-2 text-xs">
-                
-                <!-- แสดงเวลาอัปเดตล่าสุด -->
                 <div class="bg-black/20 backdrop-blur-md px-2.5 sm:px-3 py-1.5 rounded-full border border-white/20 flex items-center gap-1.5 shrink-0">
                     <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span class="text-cyan-50 font-medium whitespace-nowrap">อัปเดต: <span id="last-update-time">วันนี้ 08:00 น.</span></span>
                 </div>
 
-                <!-- Dropdown Menu รวมโปรเจกต์ในเครือ (วางแทนที่ปุ่มจำลองเดิม) -->
                 <div class="relative group">
-                    <!-- ปุ่มหลักสำหรับกดเปิดเมนู -->
                     <button class="bg-white/10 hover:bg-white/25 border border-white/30 text-white px-2.5 sm:px-3 py-1.5 rounded-lg transition duration-200 flex items-center gap-1.5 font-medium active:scale-95 whitespace-nowrap" title="เครื่องมือและโปรเจกต์สภาพอากาศ">
                         <i class="fa-solid fa-cloud-sun text-amber-300 text-sm"></i>
                         <span class="hidden sm:inline">เครื่องมือสภาพอากาศ</span>
                         <i class="fa-solid fa-chevron-down text-[10px] text-slate-300 transition-transform group-hover:rotate-180"></i>
                     </button>
 
-                    <!-- รายการเมนูดรอปดาวน์ (แสดงเมื่อเอาเมาส์ไปชี้) -->
                     <div class="absolute right-0 top-full pt-2 w-56 hidden group-hover:block transition duration-200 z-50">
                         <div class="bg-slate-800/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-700/80 py-2">
                             <div class="px-3 py-1.5 border-b border-slate-700/60 mb-1">
                                 <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">โปรเจกต์ในเครือ (Ecosystem)</p>
                             </div>
 
-                            <!-- 1. เว็บเขื่อน (หน้าปัจจุบัน) -->
                             <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-cyan-300 bg-cyan-950/40 font-semibold border-l-2 border-cyan-400">
                                 <i class="fa-solid fa-water w-4 text-center"></i>
                                 <span>ติดตามน้ำในเขื่อน (Dam Tracker)</span>
                             </a>
 
-                            <!-- 2. ลิงก์เว็บติดตามดวงอาทิตย์ -->
                             <a href="https://ollii1725-png.github.io/sun-map/" target="_blank" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-300 hover:text-amber-300 hover:bg-slate-700/50 transition">
                                 <i class="fa-solid fa-sun w-4 text-center text-amber-400"></i>
                                 <span>ติดตามดวงอาทิตย์ (Sun Tracker)</span>
                             </a>
 
-                            <!-- 3. โปรเจกต์อนาคต (พายุ/เรดาร์ฝน) -->
                             <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-400 hover:bg-slate-700/30 transition opacity-75 cursor-not-allowed" title="กำลังพัฒนา">
                                 <i class="fa-solid fa-cloud-bolt w-4 text-center text-indigo-400"></i>
                                 <span>เรดาร์พายุและฝน (Soon)</span>
                             </a>
 
-                            <!-- 4. โปรเจกต์อนาคต (ดัชนี PM2.5) -->
                             <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-400 hover:bg-slate-700/30 transition opacity-75 cursor-not-allowed" title="กำลังพัฒนา">
                                 <i class="fa-solid fa-smog w-4 text-center text-rose-400"></i>
                                 <span>ดัชนีฝุ่น PM2.5 (Soon)</span>
@@ -114,71 +93,56 @@
                         </div>
                     </div>
                 </div>
-
-                
-
             </div>
         </div>
-     </header>
+    </header>
     
-    <!-- ==================== ส่วนที่ 3: แท็บสลับมุมมอง & สรุปสถิติภาพรวม ==================== -->
-     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full space-y-6">
-        <!-- 1. แถบปุ่มสลับมุมมองการแสดงผล (Map / Grid / Chart Tabs) -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full space-y-6">
         <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-2 rounded-2xl shadow-sm border border-slate-200/80">
-            <!-- กลุ่มปุ่มสลับแท็บ -->
              <div class="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
-                <!-- ปุ่มแท็บ 1: แผนที่ประเทศไทย (ตั้งไว้เป็น Active ดั้งเดิม) -->
                  <button id="tab-map" onclick="switchView('map')" class="view-tab bg-blue-600 text-white font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm shadow-sm">
                     <i class="fa-solid fa-map-location-dot"></i>
                     <span>มุมมองแผนที่</span>
                  </button>
 
-                <!-- ปุ่มแท็บ 2: รายการเขื่อน (Grid View) -->
                  <button id="tab-grid" onclick="switchView('grid')" class="view-tab text-slate-600 hover:text-blue-600 hover:bg-slate-100 font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm">
                     <i class="fa-solid fa-table-cells text-slate-500"></i>
                     <span>รายงานเขื่อน</span> 
                  </button>
 
-                <!-- ปุ่มแท็บ 3: กราฟสถิติ (Charts Dashboard) -->
                  <button id="tab-chart" onclick="switchView('chart')" class="view-tab text-slate-600 hover:text-blue-600 hover:bg-slate-100 font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm">
                     <i class="fa-solid fa-chart-pie text-slate-500"></i>
                     <span>กราฟสรุปสถิติ</span>
                  </button>
              </div>
 
-            <!-- ข้อความช่วยเหลือสั้นๆ ด้านขวา -->
             <div class="text-xs text-slate-500 hidden lg:flex items-center gap-1.5">
                 <i class="fa-solid fa-circle-info text-blue-500"></i>
-                    <span>เนื่องจากดึงข้อมูลจาก api กรมชลประทาน ข้อมูลจะครบทุกสถานี เวลา 09:00น.</span>
+                <span>เนื่องจากดึงข้อมูลจาก api กรมชลประทาน ข้อมูลจะครบทุกสถานี เวลา 09:00น.</span>
             </div>
         </div>
 
-        <!-- 2. แถบการ์ดสรุปสถิติภาพรวม (KPI Cards - 4 กล่อง) -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-
-            <!-- กล่องที่ 1: เขื่อนทั้งหมด -->
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shrink-0">
                     <i class="fa-solid fa-database"></i>
                 </div>
                 <div>
                     <p class="text-xs font-medium text-slate-500">เขื่อนที่ติดตาม</p>
-                    <p id="kpi-total-dams" class="text-xl sm:text-2xl font-bold text-slate-800">17 แห่ง</p>
+                    <p id="kpi-total-dams" class="text-xl sm:text-2xl font-bold text-slate-800">0 แห่ง</p>
                 </div>
             </div>
 
-           <!-- กล่องที่ 2: ปริมาตรน้ำรวมเฉลี่ย --> 
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl shrink-0">
                     <i class="fa-solid fa-droplet"></i>
                 </div>
                 <div>
                     <p class="text-xs font-medium text-slate-500">ปริมาณน้ำรวมเฉลี่ย</p>
-                    <p id="kpi-avg-percent" class="text-xl sm:text-2xl font-bold text-sky-600">68%</p>
+                    <p id="kpi-avg-percent" class="text-xl sm:text-2xl font-bold text-sky-600">0%</p>
                 </div>
             </div>
 
-            <!-- กล่องที่ 3: เขื่อนระดับน้ำปกติ/เกณฑ์ดี -->
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl shrink-0">
                     <i class="fa-solid fa-circle-check"></i>
@@ -189,7 +153,6 @@
                 </div>
             </div>
 
-            <!-- กล่องที่ 4: เขื่อนเฝ้าระวัง/วิกฤต -->
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl shrink-0">
                     <i class="fa-solid fa-triangle-exclamation"></i>
@@ -199,14 +162,10 @@
                     <p id="kpi-warning-count" class="text-xl sm:text-2xl font-bold text-rose-600">0 แห่ง</p>
                 </div>
             </div>
-
         </div>
 
-        <!-- ==================== ส่วนที่ 4: ตัวกรองและค้นหา (FILTER & SEARCH CONTROLS) ==================== -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-
-                <!-- 1. ช่องค้นหาตามชื่อเขื่อน หรือ จังหวัด -->
                  <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -215,7 +174,6 @@
                     class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition duration-200">
                  </div>
 
-                <!-- 2. ดรอปดาวน์กรองตามภูมิภาค -->
                  <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-solid fa-compass"></i>
@@ -235,7 +193,6 @@
                     </div>
                  </div>
 
-                <!-- 3. ดรอปดาวน์กรองตามสถานการณ์ระดับน้ำ -->
                  <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-solid fa-filter"></i>
@@ -254,7 +211,6 @@
                     </div>
                  </div>
 
-                <!-- 4. ดรอปดาวน์เรียงลำดับข้อมูล -->
                  <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-solid fa-arrow-down-short-wide"></i>
@@ -269,15 +225,10 @@
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </div>
                  </div>
-
             </div>
         </div>
 
-    <!-- ==================== ส่วนที่ 5: โครงสร้างพื้นที่แสดงผล ==================== -->
-
-    <!-- โหมดที่ 1: แผนที่ประเทศไทย (MAP VIEW) -->
         <div id="view-map-container" class="space-y-3">
-            <!-- แถบอธิบายสัญลักษณ์สีบนแผนที่ (Map Legend) -->
             <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-2 text-xs">
                 <span class="font-semibold text-slate-700 flex items-center gap-1.5">
                     <i class="fa-solid fa-layer-group text-blue-600"></i> สัญลักษณ์สีระดับน้ำ:
@@ -290,21 +241,13 @@
                 </div>
             </div>
 
-            <!-- กล่องสำหรับวาดแผนที่ Leaflet.js (ต้องใส่ height ไว้เพื่อให้แผนที่มีความสูง) -->
             <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden relative">
                 <div id="leaflet-map" class="w-full h-[520px] sm:h-[600px] rounded-xl z-10"></div>
             </div>
         </div>
 
-    <!-- โหมดที่ 2: รายการเขื่อนแบบการ์ด (GRID VIEW) -->
-    <!-- ซ่อนไว้ตั้งต้นด้วยคลาส 'hidden' -->
         <div id="view-grid-container" class="hidden">
-            <div id="dams-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                <!-- ข้อมูลการ์ดเขื่อนทั้งหมดจะถูกสร้างด้วย JavaScript มาใส่ตรงนี้อัตโนมัติ -->
-
-            </div>
-
-            <!-- กล่องแจ้งเตือนกรณีค้นหาไม่พบข้อมูล -->
+            <div id="dams-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"></div>
              <div id="no-results" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
                 <i class="fa-solid fa-water-lower text-4xl text-slate-300 mb-3"></i>
                 <p class="text-slate-500 text-lg font-medium">ไม่พบข้อมูลเขื่อนที่คุณค้นหา</p>
@@ -312,11 +255,7 @@
              </div>
         </div>
 
-    <!-- โหมดที่ 3: กราฟสรุปสถิติ (CHART VIEW) -->
-    <!-- ซ่อนไว้ตั้งต้นด้วยคลาส 'hidden' -->
         <div id="view-chart-container" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
-            
-            <!-- กราฟที่ 1: กราฟแท่งเปรียบเทียบระดับน้ำรายเขื่อน -->
              <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
                 <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-chart-column text-blue-600"></i>
@@ -327,7 +266,6 @@
                 </div>
              </div>
 
-            <!-- กราฟที่ 2: กราฟโดนัทแสดงสัดส่วนสถานการณ์น้ำ -->
              <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
                 <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-chart-pie text-blue-600"></i>
@@ -339,16 +277,8 @@
              </div>
         </div>
 
-    <!-- ==================== ส่วนที่ 6: POPUP โมดอลรายละเอียดเขื่อน & FOOTER ==================== -->
-
-    <!-- 1. หน้าต่าง Pop-up โมดอล ( Modal Dialog ) -->
-    <!-- ตั้งต้นซ่อนไว้ด้วยคลาส 'hidden' และใช้ z-50 เพื่อให้อยู่ชั้นหน้าสุด -->
      <div id="dam-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-
-        <!-- กล่องเนื้อหาหลักภายใน Modal -->
          <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full border border-slate-100 overflow-hidden transform transition-all duration-300 scale-100">
-
-            <!-- ส่วนหัว Modal (Header): แสดงชื่อเขื่อน และปุ่มปิด [X] -->
              <div class="bg-gradient-to-r from-blue-700 to-sky-600 text-white p-5 sm:p-6 flex justify-between items-start">
                 <div>
                     <div class="flex items-center gap-2 mb-1">
@@ -360,28 +290,22 @@
                         <i class="fa-solid fa-location-dot"></i> จ.ตาก
                     </p>
                 </div>
-                <!-- ปุ่มปิด Modal [X] -->
                  <button onclick="closeModal()" class="text-white/80 hover:text-white hover:bg-white/20 w-9 h-9 rounded-full flex items-center justify-center transition duration-200">
                     <i class="fa-solid fa-xmark text-xl"></i>
                  </button>
              </div>
 
-            <!-- ส่วนเนื้อหา Modal (Body): สถิติเชิงลึก -->
              <div class="p-5 sm:p-6 space-y-6">
-
-                <!-- แถบระดับน้ำและถังน้ำจำลอง -->
                  <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-2">
                     <div class="flex justify-between items-center text-sm font-semibold">
                         <span class="text-slate-700">ระดับน้ำปัจจุบัน</span>
                         <span id="modal-percent" class="text-blue-600 text-lg font-bold">0%</span>
                     </div>
-                    <!-- แถบ Progress Bar สัดส่วนระดับน้ำ -->
                      <div class="w-full h-4 bg-slate-200 rounded-full overflow-hidden">
                         <div id="modal-progress-bar" class="h-full bg-blue-500 transition-all duration-500 rounded-full" style="width: 0%"></div>
                      </div>
                  </div>
 
-                <!-- ตารางสรุปปริมาตรน้ำย่อย 4 กล่อง -->
                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
                     <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-100">
                         <p class="text-xs text-slate-500 font-medium">ความจุสูงสุด</p>
@@ -405,33 +329,24 @@
                     </div>
                  </div>
 
-                <!-- คำแนะนำการจัดการน้ำเชิงวิศวกรรมชลประทาน -->
                  <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1">
                     <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
                         <i class="fa-solid fa-clipboard-list text-blue-600"></i> ข้อเสนอแนะการบริหารจัดการน้ำ
                     </h4>
-                    <p id="modal-recommendation" class="text-sm text-slate-700 leading-relaxed pt-1">
-                        -
-                    </p>
+                    <p id="modal-recommendation" class="text-sm text-slate-700 leading-relaxed pt-1">-</p>
                  </div>
-                 
              </div>
 
-            <!-- ส่วนท้าย Modal (Footer): ปุ่มปิด --> 
              <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 text-right">
                 <button onclick="closeModal()" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-medium rounded-xl transition duration-200">
                     ปิดหน้าต่าง
                 </button>
              </div>
-
          </div>
      </div>
 
-     <!-- 2. ส่วนท้ายสุดของเว็บไซต์ ( Footer ) -->
     <footer class="bg-slate-900 text-slate-400 text-xs py-5 mt-auto border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            
-            <!-- ด้านล่างซ้าย: ข้อความลิขสิทธิ์ และ เครดิตผู้พัฒนา -->
             <div class="text-center sm:text-left space-y-1">
                 <p class="flex items-center justify-center sm:justify-start gap-2 text-slate-300 font-medium">
                     <i class="fa-solid fa-water text-cyan-400"></i>
@@ -442,20 +357,16 @@
                 </p>
             </div>
 
-            <!-- ด้านล่างขวา: ปุ่มซัพพอร์ตเรา ( Support Us / Donate ) -->
             <div class="shrink-0">
                 <button onclick="openDonateModal()" class="bg-gradient-to-r from-amber-500 via-rose-500 to-pink-500 hover:from-amber-600 hover:to-pink-600 text-white font-medium text-xs px-4 py-2 rounded-xl shadow-md transition duration-200 flex items-center gap-2 active:scale-95 border border-white/20" title="ร่วมสนับสนุนผู้พัฒนาเว็บไซต์">
                     <i class="fa-solid fa-heart text-white animate-pulse"></i>
                     <span>ซัพพอร์ตเรา (Donate)</span>
                 </button>
             </div>
-
         </div>
 
-        <!-- Modal ซัพพอร์ต / บริจาค -->
         <div id="donate-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden text-center p-6 space-y-4 relative border border-slate-100">
-                <!-- ปุ่มปิด [X] -->
                 <button onclick="closeDonateModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full flex items-center justify-center transition">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
@@ -471,7 +382,6 @@
                     </p>
                 </div>
 
-                <!-- รูป PromptPay QR Code (นำรูปของคุณมาเปลี่ยนที่ src) -->
                 <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 inline-block">
                     <img src="https://lh3.googleusercontent.com/d/1jh3-gqtSdfnq3qdjjEZLG4M3b-RwpIWo" alt="PromptPay QR Code" class="w-48 h-48 rounded-xl mx-auto shadow-sm">
                     <p class="text-[11px] font-semibold text-slate-600 mt-2">พร้อมเพย์ / PromptPay</p>
@@ -483,501 +393,11 @@
             </div>
         </div>
     </footer>
-     
     </main>
-    <!-- ==================== ส่วนที่ 7: ชุดข้อมูลเขื่อน (JAVASCRIPT DATASET) ==================== -->
-    <!-- ==================== ส่วนที่ 7 & 8: ดึงข้อมูลจาก API กรมชลประทาน & ควบคุมระบบ ==================== -->
+
+    <!-- ==================== JAVASCRIPT OBFUSCATED SCRIPT ==================== -->
     <script>
-        // 1. คลังพิกัด (Lat/Lng) และจังหวัด สำหรับจับคู่กับชื่อเขื่อนที่ได้จาก API กรมชลประทาน
-        const damCoordsMap = {
-            "เขื่อนแม่กวงอุดมธารา": { lat: 18.9158, lng: 99.1417, province: "เชียงใหม่" },
-            "เขื่อนกิ่วลม": { lat: 18.5147, lng: 99.6203, province: "ลำปาง" },
-            "เขื่อนกิ่วคอหมา": { lat: 18.7388, lng: 99.6205, province: "ลำปาง" },
-            "เขื่อนแควน้อยบำรุงแดน": { lat: 17.1822, lng: 100.4358, province: "พิษณุโลก" },
-            "เขื่อนแม่มอก": { lat: 17.2917, lng: 99.5083, province: "สุโขทัย" },
-            "เขื่อนภูมิพล": { lat: 17.2439, lng: 98.9723, province: "ตาก" },
-            "เขื่อนสิริกิติ์": { lat: 17.7628, lng: 100.5621, province: "อุตรดิตถ์" },
-            "เขื่อนแม่งัดสมบูรณ์ชล": { lat: 19.1678, lng: 99.0389, province: "เชียงใหม่" },
-            "เขื่อนห้วยหลวง": { lat: 17.3117, lng: 102.6283, province: "อุดรธานี" },
-            "เขื่อนน้ำอูน": { lat: 17.2289, lng: 103.7389, province: "สกลนคร" },
-            "เขื่อนลำปาว": { lat: 16.6025, lng: 103.4403, province: "กาฬสินธุ์" },
-            "เขื่อนลำตะคอง": { lat: 14.8689, lng: 101.5628, province: "นครราชสีมา" },
-            "เขื่อนลำพระเพลิง": { lat: 14.5889, lng: 101.8250, province: "นครราชสีมา" },
-            "เขื่อนมูลบน": { lat: 14.4739, lng: 102.1917, province: "นครราชสีมา" },
-            "เขื่อนลำแชะ": { lat: 14.3639, lng: 102.2611, province: "นครราชสีมา" },
-            "เขื่อนลำนางรอง": { lat: 14.2889, lng: 102.7306, province: "บุรีรัมย์" },
-            "เขื่อนน้ำพุง": { lat: 16.9739, lng: 103.9861, province: "สกลนคร" },
-            "เขื่อนจุฬาภรณ์": { lat: 16.5369, lng: 101.6528, province: "ชัยภูมิ" },
-            "เขื่อนอุบลรัตน์": { lat: 16.7744, lng: 102.6178, province: "ขอนแก่น" },
-            "เขื่อนสิรินธร": { lat: 15.2056, lng: 105.4328, province: "อุบลราชธานี" },
-            "เขื่อนป่าสักชลสิทธิ์": { lat: 14.8622, lng: 100.8239, province: "ลพบุรี" },
-            "เขื่อนทับเสลา": { lat: 15.6264, lng: 99.4583, province: "อุทัยธานี" },
-            "เขื่อนกระเสียว": { lat: 14.8389, lng: 99.6694, province: "สุพรรณบุรี" },
-            "เขื่อนศรีนครินทร์": { lat: 14.4069, lng: 99.1283, province: "กาญจนบุรี" },
-            "เขื่อนวชิราลงกรณ": { lat: 14.7989, lng: 98.5969, province: "กาญจนบุรี" },
-            "เขื่อนขุนด่านปราการชล": { lat: 14.3142, lng: 101.3217, province: "นครนายก" },
-            "เขื่อนคลองสียัด": { lat: 13.5708, lng: 101.6361, province: "ฉะเชิงเทรา" },
-            "เขื่อนบางพระ": { lat: 13.2167, lng: 100.9667, province: "ชลบุรี" },
-            "เขื่อนหนองปลาไหล": { lat: 12.9239, lng: 101.2889, province: "ระยอง" },
-            "เขื่อนประแสร์": { lat: 12.9861, lng: 101.5833, province: "ระยอง" },
-            "เขื่อนนฤบดินทรจินดา": { lat: 14.1539, lng: 101.8861, province: "ปราจีนบุรี" },
-            "เขื่อนปราณบุรี": { lat: 12.3528, lng: 99.8083, province: "ประจวบคีรีขันธ์" },
-            "เขื่อนแก่งกระจาน": { lat: 12.9039, lng: 99.6389, province: "เพชรบุรี" },
-            "เขื่อนรัชชประภา": { lat: 8.9733, lng: 98.8139, province: "สุราษฎร์ธานี" },
-            "เขื่อนบางลาง": { lat: 6.1553, lng: 101.2725, province: "ยะลา" }
-        };
-
-        // ตัวแปรระบบหลัก
-        let damsData = [];
-        let map = null;
-        let mapMarkers = [];
-        let barChart = null;
-        let donutChart = null;
-        let activeFilteredDams = [];
-
-        // 2. ฟังก์ชันหลักสำหรับดึงข้อมูลสดจาก URL API ของกรมชลประทาน
-        async function fetchRIDData() {
-            const apiUrl = 'https://app.rid.go.th/reservoir/api/dam/public';
-            
-            try {
-                // เรียกข้อมูลจาก URL API
-                const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error('Network response was not ok');
-                
-                const ridJson = await response.json();
-                let loadedDams = [];
-
-                // แปลงข้อมูลจาก API กรมชลประทาน ให้อยู่ในโครงสร้างที่ระบบเราใช้งาน
-                ridJson.data.forEach(regionGroup => {
-                    // ตัดคำว่า "ภาค" ออกเพื่อให้แสดงผลสวยงาม เช่น "ภาคเหนือ" -> "เหนือ"
-                    const cleanRegion = regionGroup.region.replace('ภาค', '');
-
-                    regionGroup.dam.forEach(dam => {
-                        // ดึงพิกัด lat/lng และจังหวัดจาก Map
-                        const coords = damCoordsMap[dam.name] || { lat: 13.7500, lng: 100.5000, province: "ไม่ระบุ" };
-
-                        loadedDams.push({
-                            id: dam.id,
-                            name: dam.name,
-                            province: coords.province,
-                            region: cleanRegion,
-                            lat: coords.lat,
-                            lng: coords.lng,
-                            capacity: dam.storage || 0,        // ความจุอ่าง (ล้าน ลบ.ม.)
-                            current: dam.volume || 0,          // ปริมาณน้ำปัจจุบัน (ล้าน ลบ.ม.)
-                            inflow: dam.inflow || 0,           // ปริมาณน้ำไหลเข้าประจำวัน
-                            outflow: dam.outflow || 0          // ปริมาณน้ำระบายออกประจำวัน
-                        });
-                    });
-                });
-
-                // บันทึกข้อมูลที่ได้ลงตัวแปรหลัก
-                damsData = loadedDams;
-                activeFilteredDams = [...damsData];
-
-                // แสดงวันที่อัปเดตข้อมูลจาก API
-                document.getElementById('last-update-time').textContent = `${ridJson.date} (ข้อมูลจริง RID)`;
-
-                // สั่งประมวลผลวาดแผนที่ กราฟ การ์ด และสถิติ
-                applyFilters();
-
-            } catch (error) {
-                console.error("ไม่สามารถเชื่อมต่อ API กรมชลประทานได้:", error);
-                alert("เกิดข้อผิดพลาดในการโหลดข้อมูลจาก API กรมชลประทาน");
-            }
-        }
-
-        // 3. ฟังก์ชันวิเคราะห์ระดับน้ำและส่งกลับข้อมูลสถานะ โค้ดสี และคำแนะนำ
-        function getWaterStatus(percent) {
-            if (percent < 30) {
-                return {
-                    label: "วิกฤตน้ำน้อย",
-                    badgeBg: "bg-red-500",
-                    textColor: "text-red-600",
-                    hexColor: "#ef4444",
-                    filterGroup: "critical-low",
-                    recommendation: "ระดับน้ำอยู่ในเกณฑ์น้อยวิกฤต"
-                };
-            } else if (percent <= 50) {
-                return {
-                    label: "เฝ้าระวังน้ำน้อย",
-                    badgeBg: "bg-amber-500",
-                    textColor: "text-amber-600",
-                    hexColor: "#f59e0b",
-                    filterGroup: "warning-low",
-                    recommendation: "ปริมาณน้ำอยู่ในเกณฑ์น้อย"
-                };
-            } else if (percent <= 70) {
-                return {
-                    label: "ระดับน้ำปกติ",
-                    badgeBg: "bg-emerald-500",
-                    textColor: "text-emerald-600",
-                    hexColor: "#10b981",
-                    filterGroup: "normal",
-                    recommendation: "ระดับน้ำอยู่ในเกณฑ์ดี "
-                };
-            } else if (percent <= 85) {
-                return {
-                    label: "น้ำค่อนข้างสูง",
-                    badgeBg: "bg-yellow-500",
-                    textColor: "text-yellow-600",
-                    hexColor: "#eab308",
-                    filterGroup: "high",
-                    recommendation: "ระดับน้ำเริ่มสูงขึ้น "
-                };
-            } else if (percent <= 100) {
-                return {
-                    label: "น้ำมากเฝ้าระวัง",
-                    badgeBg: "bg-amber-600",
-                    textColor: "text-amber-700",
-                    hexColor: "#d97706",
-                    filterGroup: "very-high",
-                    recommendation: "ระดับน้ำสูงเข้าเขตเฝ้าระวังน้ำมาก "
-                };
-            } else {
-                return {
-                    label: "น้ำล้นเขื่อน",
-                    badgeBg: "bg-red-600",
-                    textColor: "text-red-700",
-                    hexColor: "#dc2626",
-                    filterGroup: "overflow",
-                    recommendation: "ระดับน้ำเกินความจุอ่างเก็บน้ำ "
-                };
-            }
-        }
-
-        // 4. เริ่มต้นระบบเมื่อเปิดหน้าเว็บ
-        window.addEventListener('DOMContentLoaded', () => {
-            initMap();
-            fetchRIDData(); // 👈 ดึงข้อมูลสดจาก API ทันทีที่โหลดหน้าเว็บ
-        });
-
-        // 5. ฟังก์ชันสร้างแผนที่ Leaflet.js
-        function initMap() {
-            map = L.map('leaflet-map').setView([13.75, 100.50], 6);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
-        }
-
-        // 6. ฟังก์ชันวาดหมุดสีบนแผนที่
-        function renderMapMarkers(dams) {
-            if (!map) return;
-
-            mapMarkers.forEach(marker => map.removeLayer(marker));
-            mapMarkers = [];
-
-            dams.forEach(dam => {
-                const percent = dam.capacity > 0 ? Math.round((dam.current / dam.capacity) * 100) : 0;
-                const status = getWaterStatus(percent);
-
-                const customIcon = L.divIcon({
-                    className: 'custom-map-marker',
-                    html: ` 
-                        <div style="background-color: ${status.hexColor};" 
-                             class="text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg border-2 border-white flex items-center justify-center whitespace-nowrap transform transition hover:scale-110 cursor-pointer">
-                            <span class="mr-1">${dam.name.replace('เขื่อน', '')}</span>
-                            <span class="bg-black/30 px-1.5 py-0.2 rounded-full text-[10px]">${percent}%</span>
-                        </div>
-                    `,
-                    iconSize: [100, 30],
-                    iconAnchor: [50, 15]
-                });
-
-                const marker = L.marker([dam.lat, dam.lng], { icon: customIcon }).addTo(map);
-
-                const popupContent = `
-                    <div class="p-1 font-sans">
-                        <div class="flex items-center justify-between gap-2 border-b pb-1.5 mb-2">
-                            <h4 class="font-bold text-slate-800 text-sm">${dam.name}</h4>
-                            <span class="text-xs px-2 py-0.5 rounded text-white ${status.badgeBg}">${status.label}</span>
-                        </div>
-                        <p class="text-xs text-slate-600">จ.${dam.province} (${dam.region})</p>
-                        <p class="text-xs font-semibold text-blue-600 mt-1">ระดับน้ำ: ${percent}% (${dam.current.toLocaleString()} / ${dam.capacity.toLocaleString()} ล้าน ลบ.ม.)</p>
-                        <button onclick="openModal('${dam.id}')" class="mt-2.5 w-full bg-blue-600 hover:bg-blue-700 text-white text-xs py-1.5 rounded-lg transition">
-                            ดูรายละเอียดเชิงลึก
-                        </button>
-                    </div>
-                `;
-
-                marker.bindPopup(popupContent);
-                mapMarkers.push(marker);
-            });
-        }
-
-        // 7. ฟังก์ชันวาดการ์ดเขื่อน (Grid View)
-        function renderGrid(dams) {
-            const container = document.getElementById('dams-grid');
-            const noResults = document.getElementById('no-results');
-
-            if (dams.length === 0) {
-                container.innerHTML = '';
-                noResults.classList.remove('hidden');
-                return;
-            }
-
-            noResults.classList.add('hidden');
-            container.innerHTML = dams.map(dam => {
-                const percent = dam.capacity > 0 ? Math.round((dam.current / dam.capacity) * 100) : 0;
-                const status = getWaterStatus(percent);
-
-                return `
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 hover:shadow-md transition duration-200 flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <div>
-                                    <span class="text-[11px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">ภาค${dam.region}</span>
-                                    <h3 class="text-lg font-bold text-slate-800 mt-1">${dam.name}</h3>
-                                    <p class="text-xs text-slate-500"><i class="fa-solid fa-location-dot text-slate-400"></i> จ.${dam.province}</p>
-                                </div>
-                                <span class="${status.badgeBg} text-white text-xs px-2.5 py-1 rounded-full font-medium shadow-sm">
-                                    ${status.label}
-                                </span>
-                            </div>
-
-                            <div class="my-4 bg-slate-100 rounded-xl p-3 border border-slate-200/60 relative overflow-hidden flex items-center gap-4">
-                                <div class="w-14 h-20 bg-slate-200 rounded-lg border-2 border-slate-300 relative overflow-hidden shrink-0 flex flex-col justify-end">
-                                    <div class="w-full transition-all duration-700 ${status.badgeBg} opacity-80" style="height: ${Math.min(100, percent)}%"></div>
-                                    <div class="absolute inset-0 flex items-center justify-center font-bold text-xs text-slate-800 drop-shadow">
-                                        ${percent}%
-                                    </div>
-                                </div>
-                                <div class="space-y-1 text-xs">
-                                    <p class="text-slate-500">ปริมาณน้ำปัจจุบัน:</p>
-                                    <p class="text-base font-bold text-slate-800">${dam.current.toLocaleString()} <span class="text-xs font-normal text-slate-500">ล้าน ลบ.ม.</span></p>
-                                    <p class="text-[11px] text-slate-400">ความจุสูงสุด: ${dam.capacity.toLocaleString()} ล้าน ลบ.ม.</p>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-2.5 rounded-xl text-center mb-4">
-                                <div>
-                                    <p class="text-slate-400 text-[10px]">น้ำไหลเข้าวันนี้</p>
-                                    <p class="font-semibold text-emerald-600">+${dam.inflow.toLocaleString()} <span class="text-[10px]">มล.ลบ.ม.</span></p>
-                                </div>
-                                <div>
-                                    <p class="text-slate-400 text-[10px]">น้ำระบายออกวันนี้</p>
-                                    <p class="font-semibold text-rose-600">-${dam.outflow.toLocaleString()} <span class="text-[10px]">มล.ลบ.ม.</span></p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button onclick="openModal('${dam.id}')" class="w-full bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 font-medium py-2 rounded-xl text-xs transition duration-200 flex items-center justify-center gap-1.5 border border-slate-200">
-                            <i class="fa-solid fa-circle-info"></i> รายละเอียดข้อมูลเขื่อน
-                        </button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // 8. ฟังก์ชันวาดกราฟสถิติ Chart.js
-        function renderCharts(dams) {
-            const ctxBar = document.getElementById('bar-chart-canvas').getContext('2d');
-            if (barChart) barChart.destroy();
-
-            barChart = new Chart(ctxBar, {
-                type: 'bar',
-                data: {
-                    labels: dams.map(d => d.name.replace('เขื่อน', '')),
-                    datasets: [{
-                        label: 'ระดับน้ำปัจจุบัน (%)',
-                        data: dams.map(d => d.capacity > 0 ? Math.round((d.current / d.capacity) * 100) : 0),
-                        backgroundColor: dams.map(d => getWaterStatus(d.capacity > 0 ? Math.round((d.current / d.capacity) * 100) : 0).hexColor),
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { max: 120, beginAtZero: true } }
-                }
-            });
-
-            const ctxDonut = document.getElementById('donut-chart-canvas').getContext('2d');
-            if (donutChart) donutChart.destroy();
-
-            const statusCounts = { 'วิกฤตน้ำน้อย': 0, 'เฝ้าระวังน้ำน้อย': 0, 'ปกติ': 0, 'น้ำค่อนข้างสูง': 0, 'น้ำมาก/ล้นเขื่อน': 0 };
-            dams.forEach(d => {
-                const p = d.capacity > 0 ? Math.round((d.current / d.capacity) * 100) : 0;
-                if (p < 30) statusCounts['วิกฤตน้ำน้อย']++;
-                else if (p <= 50) statusCounts['เฝ้าระวังน้ำน้อย']++;
-                else if (p <= 70) statusCounts['ปกติ']++;
-                else if (p <= 85) statusCounts['น้ำค่อนข้างสูง']++;
-                else statusCounts['น้ำมาก/ล้นเขื่อน']++;
-            });
-
-            donutChart = new Chart(ctxDonut, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(statusCounts),
-                    datasets: [{
-                        data: Object.values(statusCounts),
-                        backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#eab308', '#dc2626']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom' } }
-                }
-            });
-        }
-
-        // 9. ฟังก์ชันอัปเดตสถิติ KPI ภาพรวม
-        function updateKPIs(dams) {
-            document.getElementById('kpi-total-dams').textContent = `${dams.length} แห่ง`;
-            
-            if (dams.length === 0) {
-                document.getElementById('kpi-avg-percent').textContent = '0%';
-                document.getElementById('kpi-normal-count').textContent = '0 แห่ง';
-                document.getElementById('kpi-warning-count').textContent = '0 แห่ง';
-                return;
-            }
-
-            const totalCapacity = dams.reduce((acc, d) => acc + d.capacity, 0);
-            const totalCurrent = dams.reduce((acc, d) => acc + d.current, 0);
-            const avgPercent = totalCapacity > 0 ? Math.round((totalCurrent / totalCapacity) * 100) : 0;
-
-            let normalCount = 0;
-            let warningCount = 0;
-
-            dams.forEach(d => {
-                const p = d.capacity > 0 ? Math.round((d.current / d.capacity) * 100) : 0;
-                if (p >= 50 && p <= 70) normalCount++;
-                else if (p < 30 || p > 85) warningCount++;
-            });
-
-            document.getElementById('kpi-avg-percent').textContent = `${avgPercent}%`;
-            document.getElementById('kpi-normal-count').textContent = `${normalCount} แห่ง`;
-            document.getElementById('kpi-warning-count').textContent = `${warningCount} แห่ง`;
-        }
-
-        // 10. ฟังก์ชันค้นหาและกรองข้อมูล
-        function applyFilters() {
-            const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
-            const regionVal = document.getElementById('region-filter').value;
-            const statusVal = document.getElementById('status-filter').value;
-            const sortVal = document.getElementById('sort-order').value;
-
-            let filtered = damsData.filter(dam => {
-                const matchSearch = dam.name.toLowerCase().includes(searchVal) || dam.province.toLowerCase().includes(searchVal);
-                const matchRegion = regionVal === 'all' || dam.region === regionVal;
-                
-                const percent = dam.capacity > 0 ? Math.round((dam.current / dam.capacity) * 100) : 0;
-                const status = getWaterStatus(percent);
-                const matchStatus = statusVal === 'all' || status.filterGroup === statusVal;
-
-                return matchSearch && matchRegion && matchStatus;
-            });
-
-            if (sortVal === 'percent-desc') {
-                filtered.sort((a, b) => (b.current / b.capacity) - (a.current / a.capacity));
-            } else if (sortVal === 'percent-asc') {
-                filtered.sort((a, b) => (a.current / a.capacity) - (b.current / b.capacity));
-            } else if (sortVal === 'name-asc') {
-                filtered.sort((a, b) => a.name.localeCompare(b.name, 'th'));
-            }
-
-            activeFilteredDams = filtered;
-            updateKPIs(filtered);
-            renderMapMarkers(filtered);
-            renderGrid(filtered);
-            renderCharts(filtered);
-        }
-
-        // 11. ฟังก์ชันสลับแท็บมุมมอง
-        function switchView(viewName) {
-            document.getElementById('view-map-container').classList.add('hidden');
-            document.getElementById('view-grid-container').classList.add('hidden');
-            document.getElementById('view-chart-container').classList.add('hidden');
-
-            document.querySelectorAll('.view-tab').forEach(btn => {
-                btn.className = 'view-tab text-slate-600 hover:text-blue-600 hover:bg-slate-100 font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm';
-            });
-
-            if (viewName === 'map') {
-                document.getElementById('view-map-container').classList.remove('hidden');
-                document.getElementById('tab-map').className = 'view-tab bg-blue-600 text-white font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm shadow-sm';
-                setTimeout(() => { if (map) map.invalidateSize(); }, 200);
-            } else if (viewName === 'grid') {
-                document.getElementById('view-grid-container').classList.remove('hidden');
-                document.getElementById('tab-grid').className = 'view-tab bg-blue-600 text-white font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm shadow-sm';
-            } else if (viewName === 'chart') {
-                document.getElementById('view-chart-container').classList.remove('hidden');
-                document.getElementById('tab-chart').className = 'view-tab bg-blue-600 text-white font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm shadow-sm';
-            }
-        }
-
-        // 12. ฟังก์ชันเปิด/ปิด Pop-up Modal
-        function openModal(damId) {
-            const dam = damsData.find(d => String(d.id) === String(damId));
-            if (!dam) return;
-
-            const percent = dam.capacity > 0 ? Math.round((dam.current / dam.capacity) * 100) : 0;
-            const status = getWaterStatus(percent);
-            const usableVolume = Math.max(0, dam.current - Math.round(dam.capacity * 0.15));
-
-            document.getElementById('modal-dam-name').textContent = dam.name;
-            document.getElementById('modal-dam-province').innerHTML = `<i class="fa-solid fa-location-dot"></i> จ.${dam.province} (ภาค${dam.region})`;
-            document.getElementById('modal-region-badge').textContent = `ภาค${dam.region}`;
-            
-            const statusBadge = document.getElementById('modal-status-badge');
-            statusBadge.textContent = status.label;
-            statusBadge.className = `text-white text-xs px-2.5 py-0.5 rounded-full font-medium ${status.badgeBg}`;
-
-            document.getElementById('modal-percent').textContent = `${percent}%`;
-            document.getElementById('modal-percent').className = `text-lg font-bold ${status.textColor}`;
-            
-            const progressBar = document.getElementById('modal-progress-bar');
-            progressBar.style.width = `${Math.min(100, percent)}%`;
-            progressBar.className = `h-full transition-all duration-500 rounded-full ${status.badgeBg}`;
-
-            document.getElementById('modal-capacity').textContent = dam.capacity.toLocaleString();
-            document.getElementById('modal-current-volume').textContent = dam.current.toLocaleString();
-            document.getElementById('modal-usable-volume').textContent = usableVolume.toLocaleString();
-            document.getElementById('modal-inflow').textContent = dam.inflow.toLocaleString();
-            document.getElementById('modal-recommendation').textContent = status.recommendation;
-
-            document.getElementById('dam-modal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('dam-modal').classList.add('hidden');
-        }
-
-        // 13. ฟังก์ชันจำลองสถานการณ์ฝนตก / ภัยแล้ง
-        function simulateWaterChange(changePercent) {
-            damsData.forEach(dam => {
-                const diff = Math.round(dam.capacity * (changePercent / 100));
-                dam.current = Math.max(0, Math.min(dam.capacity * 1.1, dam.current + diff));
-            });
-
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('last-update-time').textContent = `วันนี้ ${timeStr} น. (จำลอง)`;
-
-            applyFilters();
-        }
-
-        // ฟังก์ชันรีเซ็ตค่ากลับเป็นข้อมูลจริงจาก API
-        function resetSimulatedData() {
-            // โหลดข้อมูลจริงสดๆ จาก API กรมชลประทานอีกครั้ง
-            fetchRIDData();
-        }
-
-        // ฟังก์ชันเปิด-ปิด หน้าต่างบริจาค
-        function openDonateModal() {
-            document.getElementById('donate-modal').classList.remove('hidden');
-        }
-
-        function closeDonateModal() {
-            document.getElementById('donate-modal').classList.add('hidden');
-        }
-
+    var _0x2a1f=["\x6B\x69\x77\x2D\x6C\x6F\x6D","\x6B\x69\x77\x2D\x6B\x6F\x2D\x6D\x61","\x6B\x77\x61\x65\x2D\x6E\x6F\x69","\x62\x68\x75\x6D\x69\x62\x6F\x6C","\x73\x69\x72\x69\x6B\x69\x74"];const damCoordsMap={"เขื่อนแม่กวงอุดมธารา":{lat:18.9158,lng:99.1417,province:"เชียงใหม่"},"เขื่อนกิ่วลม":{lat:18.5147,lng:99.6203,province:"ลำปาง"},"เขื่อนกิ่วคอหมา":{lat:18.7388,lng:99.6205,province:"ลำปาง"},"เขื่อนแควน้อยบำรุงแดน":{lat:17.1822,lng:100.4358,province:"พิษณุโลก"},"เขื่อนแม่มอก":{lat:17.2917,lng:99.5083,province:"สุโขทัย"},"เขื่อนภูมิพล":{lat:17.2439,lng:98.9723,province:"ตาก"},"เขื่อนสิริกิติ์":{lat:17.7628,lng:100.5621,province:"อุตรดิตถ์"},"เขื่อนแม่งัดสมบูรณ์ชล":{lat:19.1678,lng:99.0389,province:"เชียงใหม่"},"เขื่อนห้วยหลวง":{lat:17.3117,lng:102.6283,province:"อุดรธานี"},"เขื่อนน้ำอูน":{lat:17.2289,lng:103.7389,province:"สกลนคร"},"เขื่อนลำปาว":{lat:16.6025,lng:103.4403,province:"กาฬสินธุ์"},"เขื่อนลำตะคอง":{lat:14.8689,lng:101.5628,province:"นครราชสีมา"},"เขื่อนลำพระเพลิง":{lat:14.5889,lng:101.8250,province:"นครราชสีมา"},"เขื่อนมูลบน":{lat:14.4739,lng:102.1917,province:"นครราชสีมา"},"เขื่อนลำแชะ":{lat:14.3639,lng:102.2611,province:"นครราชสีมา"},"เขื่อนลำนางรอง":{lat:14.2889,lng:102.7306,province:"บุรีรัมย์"},"เขื่อนน้ำพุง":{lat:16.9739,lng:103.9861,province:"สกลนคร"},"เขื่อนจุฬาภรณ์":{lat:16.5369,lng:101.6528,province:"ชัยภูมิ"},"เขื่อนอุบลรัตน์":{lat:16.7744,lng:102.6178,province:"ขอนแก่น"},"เขื่อนสิรินธร":{lat:15.2056,lng:105.4328,province:"อุบลราชธานี"},"เขื่อนป่าสักชลสิทธิ์":{lat:14.8622,lng:100.8239,province:"ลพบุรี"},"เขื่อนทับเสลา":{lat:15.6264,lng:99.4583,province:"อุทัยธานี"},"เขื่อนกระเสียว":{lat:14.8389,lng:99.6694,province:"สุพรรณบุรี"},"เขื่อนศรีนครินทร์":{lat:14.4069,lng:99.1283,province:"กาญจนบุรี"},"เขื่อนวชิราลงกรณ":{lat:14.7989,lng:98.5969,province:"กาญจนบุรี"},"เขื่อนขุนด่านปราการชล":{lat:14.3142,lng:101.3217,province:"นครนายก"},"เขื่อนคลองสียัด":{lat:13.5708,lng:101.6361,province:"ฉะเชิงเทรา"},"เขื่อนบางพระ":{lat:13.2167,lng:100.9667,province:"ชลบุรี"},"เขื่อนหนองปลาไหล":{lat:12.9239,lng:101.2889,province:"ระยอง"},"เขื่อนประแสร์":{lat:12.9861,lng:101.5833,province:"ระยอง"},"เขื่อนนฤบดินทรจินดา":{lat:14.1539,lng:101.8861,province:"ปราจีนบุรี"},"เขื่อนปราณบุรี":{lat:12.3528,lng:99.8083,province:"ประจวบคีรีขันธ์"},"เขื่อนแก่งกระจาน":{lat:12.9039,lng:99.6389,province:"เพชรบุรี"},"เขื่อนรัชชประภา":{lat:8.9733,lng:98.8139,province:"สุราษฎร์ธานี"},"เขื่อนบางลาง":{lat:6.1553,lng:101.2725,province:"ยะลา"}};let damsData=[],map=null,mapMarkers=[],barChart=null,donutChart=null,activeFilteredDams=[];async function fetchRIDData(){const _0x1a=["\x68\x74\x74\x70\x73\x3A\x2F\x2F\x61\x70\x70\x2E\x72\x69\x64\x2E\x67\x6F\x2E\x74\x68\x2F\x72\x65\x73\x65\x72\x76\x6F\x69\x72\x2F\x61\x70\x69\x2F\x64\x61\x6D\x2F\x70\x75\x62\x6C\x69\x63"];try{const _0x2b=await fetch(_0x1a[0]);if(!_0x2b.ok)throw new Error("Network error");const _0x3c=await _0x2b.json();let _0x4d=[];_0x3c.data.forEach(_0x5e=>{const _0x6f=_0x5e.region.replace("ภาค","");_0x5e.dam.forEach(_0x7a=>{const _0x8b=damCoordsMap[_0x7a.name]||{lat:13.75,lng:100.5,province:"ไม่ระบุ"};_0x4d.push({id:_0x7a.id,name:_0x7a.name,province:_0x8b.province,region:_0x6f,lat:_0x8b.lat,lng:_0x8b.lng,capacity:_0x7a.storage||0,current:_0x7a.volume||0,inflow:_0x7a.inflow||0,outflow:_0x7a.outflow||0})})});damsData=_0x4d;activeFilteredDams=[...damsData];document.getElementById("last-update-time").textContent=`${_0x3c.date} (ข้อมูลจริง RID)`;applyFilters()}catch(_0x9e){console.error(_0x9e)}}function getWaterStatus(_0x1b){if(_0x1b<30)return{label:"วิกฤตน้ำน้อย",badgeBg:"bg-red-500",textColor:"text-red-600",hexColor:"#ef4444",filterGroup:"critical-low",recommendation:"ระดับน้ำอยู่ในเกณฑ์น้อยวิกฤต"};else if(_0x1b<=50)return{label:"เฝ้าระวังน้ำน้อย",badgeBg:"bg-amber-500",textColor:"text-amber-600",hexColor:"#f59e0b",filterGroup:"warning-low",recommendation:"ปริมาณน้ำอยู่ในเกณฑ์น้อย"};else if(_0x1b<=70)return{label:"ระดับน้ำปกติ",badgeBg:"bg-emerald-500",textColor:"text-emerald-600",hexColor:"#10b981",filterGroup:"normal",recommendation:"ระดับน้ำอยู่ในเกณฑ์ดี "};else if(_0x1b<=85)return{label:"น้ำค่อนข้างสูง",badgeBg:"bg-yellow-500",textColor:"text-yellow-600",hexColor:"#eab308",filterGroup:"high",recommendation:"ระดับน้ำเริ่มสูงขึ้น "};else if(_0x1b<=100)return{label:"น้ำมากเฝ้าระวัง",badgeBg:"bg-amber-600",textColor:"text-amber-700",hexColor:"#d97706",filterGroup:"very-high",recommendation:"ระดับน้ำสูงเข้าเขตเฝ้าระวังน้ำมาก "};else return{label:"น้ำล้นเขื่อน",badgeBg:"bg-red-600",textColor:"text-red-700",hexColor:"#dc2626",filterGroup:"overflow",recommendation:"ระดับน้ำเกินความจุอ่างเก็บน้ำ "}}window.addEventListener("DOMContentLoaded",()=>{initMap();fetchRIDData()});function initMap(){map=L.map("leaflet-map").setView([13.75,100.5],6);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap contributors"}).addTo(map)}function renderMapMarkers(_0x2c){if(!map)return;mapMarkers.forEach(_0x3d=>map.removeLayer(_0x3d));mapMarkers=[];_0x2c.forEach(_0x4e=>{const _0x5f=_0x4e.capacity>0?Math.round((_0x4e.current/_0x4e.capacity)*100):0;const _0x6a=getWaterStatus(_0x5f);const _0x7b=L.divIcon({className:"custom-map-marker",html:`<div style="background-color: ${_0x6a.hexColor};" class="text-white font-bold text-xs px-2 py-1 rounded-full shadow-lg border-2 border-white flex items-center justify-center whitespace-nowrap transform transition hover:scale-110 cursor-pointer"><span class="mr-1">${_0x4e.name.replace("เขื่อน","")}</span><span class="bg-black/30 px-1.5 py-0.2 rounded-full text-[10px]">${_0x5f}%</span></div>`,iconSize:[100,30],iconAnchor:[50,15]});const _0x8c=L.marker([_0x4e.lat,_0x4e.lng],{icon:_0x7b}).addTo(map);const _0x9d=`<div class="p-1 font-sans"><div class="flex items-center justify-between gap-2 border-b pb-1.5 mb-2"><h4 class="font-bold text-slate-800 text-sm">${_0x4e.name}</h4><span class="text-xs px-2 py-0.5 rounded text-white ${_0x6a.badgeBg}">${_0x6a.label}</span></div><p class="text-xs text-slate-600">จ.${_0x4e.province} (${_0x4e.region})</p><p class="text-xs font-semibold text-blue-600 mt-1">ระดับน้ำ: ${_0x5f}% (${_0x4e.current.toLocaleString()} / ${_0x4e.capacity.toLocaleString()} ล้าน ลบ.ม.)</p><button onclick="openModal('${_0x4e.id}')" class="mt-2.5 w-full bg-blue-600 hover:bg-blue-700 text-white text-xs py-1.5 rounded-lg transition">ดูรายละเอียดเชิงลึก</button></div>`;_0x8c.bindPopup(_0x9d);mapMarkers.push(_0x8c)})}function renderGrid(_0x1c){const _0x2d=document.getElementById("dams-grid"),_0x3e=document.getElementById("no-results");if(_0x1c.length===0){_0x2d.innerHTML="";_0x3e.classList.remove("hidden");return}_0x3e.classList.add("hidden");_0x2d.innerHTML=_0x1c.map(_0x4f=>{const _0x5a=_0x4f.capacity>0?Math.round((_0x4f.current/_0x4f.capacity)*100):0;const _0x6b=getWaterStatus(_0x5a);return`<div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 hover:shadow-md transition duration-200 flex flex-col justify-between"><div><div class="flex justify-between items-start mb-3"><div><span class="text-[11px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">ภาค${_0x4f.region}</span><h3 class="text-lg font-bold text-slate-800 mt-1">${_0x4f.name}</h3><p class="text-xs text-slate-500"><i class="fa-solid fa-location-dot text-slate-400"></i> จ.${_0x4f.province}</p></div><span class="${_0x6b.badgeBg} text-white text-xs px-2.5 py-1 rounded-full font-medium shadow-sm">${_0x6b.label}</span></div><div class="my-4 bg-slate-100 rounded-xl p-3 border border-slate-200/60 relative overflow-hidden flex items-center gap-4"><div class="w-14 h-20 bg-slate-200 rounded-lg border-2 border-slate-300 relative overflow-hidden shrink-0 flex flex-col justify-end"><div class="w-full transition-all duration-700 ${_0x6b.badgeBg} opacity-80" style="height: ${Math.min(100,_0x5a)}%"></div><div class="absolute inset-0 flex items-center justify-center font-bold text-xs text-slate-800 drop-shadow">${_0x5a}%</div></div><div class="space-y-1 text-xs"><p class="text-slate-500">ปริมาณน้ำปัจจุบัน:</p><p class="text-base font-bold text-slate-800">${_0x4f.current.toLocaleString()} <span class="text-xs font-normal text-slate-500">ล้าน ลบ.ม.</span></p><p class="text-[11px] text-slate-400">ความจุสูงสุด: ${_0x4f.capacity.toLocaleString()} ล้าน ลบ.ม.</p></div></div><div class="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-2.5 rounded-xl text-center mb-4"><div><p class="text-slate-400 text-[10px]">น้ำไหลเข้าวันนี้</p><p class="font-semibold text-emerald-600">+${_0x4f.inflow.toLocaleString()} <span class="text-[10px]">มล.ลบ.ม.</span></p></div><div><p class="text-slate-400 text-[10px]">น้ำระบายออกวันนี้</p><p class="font-semibold text-rose-600">-${_0x4f.outflow.toLocaleString()} <span class="text-[10px]">มล.ลบ.ม.</span></p></div></div></div><button onclick="openModal('${_0x4f.id}')" class="w-full bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 font-medium py-2 rounded-xl text-xs transition duration-200 flex items-center justify-center gap-1.5 border border-slate-200"><i class="fa-solid fa-circle-info"></i> รายละเอียดข้อมูลเขื่อน</button></div>`}).join("")}function renderCharts(_0x1d){const _0x2e=document.getElementById("bar-chart-canvas").getContext("2d");if(barChart)barChart.destroy();barChart=new Chart(_0x2e,{type:"bar",data:{labels:_0x1d.map(_0x3f=>_0x3f.name.replace("เขื่อน","")),datasets:[{label:"ระดับน้ำปัจจุบัน (%)",data:_0x1d.map(_0x4a=>_0x4a.capacity>0?Math.round((_0x4a.current/_0x4a.capacity)*100):0),backgroundColor:_0x1d.map(_0x5b=>getWaterStatus(_0x5b.capacity>0?Math.round((_0x5b.current/_0x5b.capacity)*100):0).hexColor),borderRadius:6}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{display:!1}},scales:{y:{max:120,beginAtZero:!0}}}});const _0x6c=document.getElementById("donut-chart-canvas").getContext("2d");if(donutChart)donutChart.destroy();const _0x7d={"วิกฤตน้ำน้อย":0,"เฝ้าระวังน้ำน้อย":0,"ปกติ":0,"น้ำค่อนข้างสูง":0,"น้ำมาก/ล้นเขื่อน":0};_0x1d.forEach(_0x8e=>{const _0x9f=_0x8e.capacity>0?Math.round((_0x8e.current/_0x8e.capacity)*100):0;if(_0x9f<30)_0x7d["วิกฤตน้ำน้อย"]++;else if(_0x9f<=50)_0x7d["เฝ้าระวังน้ำน้อย"]++;else if(_0x9f<=70)_0x7d["ปกติ"]++;else if(_0x9f<=85)_0x7d["น้ำค่อนข้างสูง"]++;else _0x7d["น้ำมาก/ล้นเขื่อน"]++});donutChart=new Chart(_0x6c,{type:"doughnut",data:{labels:Object.keys(_0x7d),datasets:[{data:Object.values(_0x7d),backgroundColor:["#ef4444","#f59e0b","#10b981","#eab308","#dc2626"]}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{position:"bottom"}}}})}function updateKPIs(_0x1e){document.getElementById("kpi-total-dams").textContent=`${_0x1e.length} แห่ง`;if(_0x1e.length===0){document.getElementById("kpi-avg-percent").textContent="0%";document.getElementById("kpi-normal-count").textContent="0 แห่ง";document.getElementById("kpi-warning-count").textContent="0 แห่ง";return}const _0x2f=_0x1e.reduce((_0x3a,_0x4b)=>_0x3a+_0x4b.capacity,0),_0x5c=_0x1e.reduce((_0x6d,_0x7e)=>_0x6d+_0x7e.current,0),_0x8f=_0x2f>0?Math.round((_0x5c/_0x2f)*100):0;let _0x9a=0,_0xab=0;_0x1e.forEach(_0xbc=>{const _0xcd=_0xbc.capacity>0?Math.round((_0xbc.current/_0xbc.capacity)*100):0;if(_0xcd>=50&&_0xcd<=70)_0x9a++;else if(_0xcd<30||_0xcd>85)_0xab++});document.getElementById("kpi-avg-percent").textContent=`${_0x8f}%`;document.getElementById("kpi-normal-count").textContent=`${_0x9a} แห่ง`;document.getElementById("kpi-warning-count").textContent=`${_0xab} แห่ง`}function applyFilters(){const _0x1f=document.getElementById("search-input").value.toLowerCase().trim(),_0x2a=document.getElementById("region-filter").value,_0x3b=document.getElementById("status-filter").value,_0x4c=document.getElementById("sort-order").value;let _0x5d=damsData.filter(_0x6e=>{const _0x7f=_0x6e.name.toLowerCase().includes(_0x1f)||_0x6e.province.toLowerCase().includes(_0x1f),_0x8a=_0x2a==="all"||_0x6e.region===_0x2a,_0x9b=_0x6e.capacity>0?Math.round((_0x6e.current/_0x6e.capacity)*100):0,_0xac=getWaterStatus(_0x9b),_0xbd=_0x3b==="all"||_0xac.filterGroup===_0x3b;return _0x7f&&_0x8a&&_0xbd});if(_0x4c==="percent-desc")_0x5d.sort((_0xce,_0xdf)=>(_0xdf.current/_0xdf.capacity)-(_0xce.current/_0xce.capacity));else if(_0x4c==="percent-asc")_0x5d.sort((_0xea,_0xfb)=>(_0xea.current/_0xea.capacity)-(_0xfb.current/_0xfb.capacity));else if(_0x4c==="name-asc")_0x5d.sort((_0x11,_0x22)=>_0x11.name.localeCompare(_0x22.name,"th"));activeFilteredDams=_0x5d;updateKPIs(_0x5d);renderMapMarkers(_0x5d);renderGrid(_0x5d);renderCharts(_0x5d)}function switchView(_0x33){document.getElementById("view-map-container").classList.add("hidden");document.getElementById("view-grid-container").classList.add("hidden");document.getElementById("view-chart-container").classList.add("hidden");document.querySelectorAll(".view-tab").forEach(_0x44=>{_0x44.className="view-tab text-slate-600 hover:text-blue-600 hover:bg-slate-100 font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm"});if(_0x33==="map"){document.getElementById("view-map-container").classList.remove("hidden");document.getElementById("tab-map").className="view-tab bg-blue-600 text-white font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm shadow-sm";setTimeout(()=>{if(map)map.invalidateSize()},200)}else if(_0x33==="grid"){document.getElementById("view-grid-container").classList.remove("hidden");document.getElementById("tab-grid").className="view-tab bg-blue-600 text-white font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm shadow-sm"}else if(_0x33==="chart"){document.getElementById("view-chart-container").classList.remove("hidden");document.getElementById("tab-chart").className="view-tab bg-blue-600 text-white font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm shadow-sm"}}function openModal(_0x55){const _0x66=damsData.find(_0x77=>String(_0x77.id)===String(_0x55));if(!_0x66)return;const _0x88=_0x66.capacity>0?Math.round((_0x66.current/_0x66.capacity)*100):0,_0x99=getWaterStatus(_0x88),_0xaa=Math.max(0,_0x66.current-Math.round(_0x66.capacity*0.15));document.getElementById("modal-dam-name").textContent=_0x66.name;document.getElementById("modal-dam-province").innerHTML=`<i class="fa-solid fa-location-dot"></i> จ.${_0x66.province} (ภาค${_0x66.region})`;document.getElementById("modal-region-badge").textContent=`ภาค${_0x66.region}`;const _0xbb=document.getElementById("modal-status-badge");_0xbb.textContent=_0x99.label;_0xbb.className=`text-white text-xs px-2.5 py-0.5 rounded-full font-medium ${_0x99.badgeBg}`;document.getElementById("modal-percent").textContent=`${_0x88}%`;document.getElementById("modal-percent").className=`text-lg font-bold ${_0x99.textColor}`;const _0xcc=document.getElementById("modal-progress-bar");_0xcc.style.width=`${Math.min(100,_0x88)}%`;_0xcc.className=`h-full transition-all duration-500 rounded-full ${_0x99.badgeBg}`;document.getElementById("modal-capacity").textContent=_0x66.capacity.toLocaleString();document.getElementById("modal-current-volume").textContent=_0x66.current.toLocaleString();document.getElementById("modal-usable-volume").textContent=_0xaa.toLocaleString();document.getElementById("modal-inflow").textContent=_0x66.inflow.toLocaleString();document.getElementById("modal-recommendation").textContent=_0x99.recommendation;document.getElementById("dam-modal").classList.remove("hidden")}function closeModal(){document.getElementById("dam-modal").classList.add("hidden")}function openDonateModal(){document.getElementById("donate-modal").classList.remove("hidden")}function closeDonateModal(){document.getElementById("donate-modal").classList.add("hidden")}
     </script>
-
-   
-     
 </body>
 </html>
