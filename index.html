@@ -1,18 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Author Credit -->
     <!-- by Mr.Sumet Prapasathit -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบติดตามสถานการณ์น้ำในเขื่อนทั่วประเทศไทย</title>
-    <meta name="description" content="เช็กระดับน้ำในเขื่อนหลักทั่วประเทศไทย Real-time พร้อมแผนที่ปฏิสัมพันธ์ สถิติน้ำล้น และแจ้งเตือนภัยแล้ง">
-    <meta name="keywords" content="ระดับน้ำในเขื่อน, สถานการณ์น้ำ, กรมชลประทาน, เขื่อนภูมิพล, เขื่อนสิริกิติ์, ภัยแล้ง, น้ำท่วม">
+    
+    <!-- 1. Primary Title & Description (ส่งผลตรงต่อการติดอันดับบน Google) -->
+    <title>ปริมาณน้ำในเขื่อนทั่วประเทศ</title>
+    <meta name="description" content="เช็กปริมาณน้ำในเขื่อนทั่วประเทศแบบ Real-time ข้อมูลจริงจากกรมชลประทาน ดูเปอร์เซ็นต์น้ำ น้ำไหลเข้า-ระบายออกประจำวัน ภาพกล้อง CCTV สภาพหน้าเขื่อน และแผนที่ปฏิสัมพันธ์">
+    <meta name="keywords" content="ปริมาณน้ำในเขื่อนทั่วประเทศ, ปริมาณน้ำในเขื่อน, น้ำในเขื่อน, สถานการณ์น้ำ, กรมชลประทาน, เขื่อนภูมิพล, เขื่อนสิริกิติ์, เขื่อนศรีนครินทร์, เขื่อนวชิราลงกรณ, เช็กน้ำท่วม, ระบายน้ำ">
+    <meta name="author" content="Sumet Prapasathit">
     <meta name="robots" content="index, follow">
-    <!-- Facebook & LINE Open Graph -->
-    <meta property="og:title" content="ระบบติดตามสถานการณ์น้ำในเขื่อนทั่วไทย (Dam Tracker)">
-    <meta property="og:description" content="เช็กระดับน้ำ Real-time บนแผนที่ปฏิสัมพันธ์ ดูปริมาณน้ำล้นและน้ำแล้งได้ทันที">
-    <meta property="og:image" content="https://ollii1725-png.github.io/damsthailand/preview-cover.png"> <!-- รูปแคปหน้าจอสวยๆ ของเว็บ -->
+    <link rel="canonical" href="https://ollii1725-png.github.io/damsthailand/">
+
+    <!-- 2. Open Graph / Facebook / LINE (ทำให้คนอยากกดคลิกเมื่อแชร์ลงโซเชียล) -->
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ollii1725-png.github.io/damsthailand/">
+    <meta property="og:title" content="ปริมาณน้ำในเขื่อนทั่วประเทศ (Dam Tracker)">
+    <meta property="og:description" content="เช็กปริมาณน้ำในเขื่อน Real-time ดูน้ำไหลเข้า-ระบายออก และกล้อง CCTV หน้าเขื่อนสดๆ ได้ทันที">
+    <meta property="og:image" content="https://ollii1725-png.github.io/damsthailand/preview-cover.png">
+
+    <!-- 3. Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ปริมาณน้ำในเขื่อนทั่วประเทศ">
+    <meta name="twitter:description" content="เช็กปริมาณน้ำในเขื่อนหลักทั่วไทย Real-time พร้อมแผนที่ปฏิสัมพันธ์ และกล้อง CCTV">
+    <meta name="twitter:image" content="https://ollii1725-png.github.io/damsthailand/preview-cover.png">
+
+    <!-- 4. Schema.org Structured Data (ช่วยให้ Google เข้าใจข้อมูลเว็บเชิงลึก และสุ่มแสดงเป็น Rich Snippet) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "ปริมาณน้ำในเขื่อนทั่วประเทศ",
+      "url": "https://ollii1725-png.github.io/damsthailand/",
+      "description": "ระบบเช็กปริมาณน้ำในเขื่อนหลักทั่วประเทศไทย Real-time ข้อมูลจากกรมชลประทาน",
+      "applicationCategory": "GovernmentApplication",
+      "operatingSystem": "All",
+      "author": {
+        "@type": "Person",
+        "name": "Sumet Prapasathit"
+      }
+    }
+    </script>
 
 
     <!-- 4. นำเข้า Tailwind CSS ช่วยในการจัดสไตล์หน้าเว็บได้ง่ายด้วย Utility Classes -->
