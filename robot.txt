@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ollii1725-png.github.io/damsthailand/sitemap.xml
