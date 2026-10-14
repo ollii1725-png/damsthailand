@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- 1. Primary Title & Description (ส่งผลตรงต่อการติดอันดับบน Google) -->
+    
     <title>ปริมาณน้ำในเขื่อนทั่วประเทศ</title>
     <meta name="description" content="เช็กปริมาณน้ำในเขื่อนทั่วประเทศแบบ Real-time ข้อมูลจริงจากกรมชลประทาน ดูเปอร์เซ็นต์น้ำ น้ำไหลเข้า-ระบายออกประจำวัน ภาพกล้อง CCTV สภาพหน้าเขื่อน และแผนที่ปฏิสัมพันธ์">
     <meta name="keywords" content="ปริมาณน้ำในเขื่อนทั่วประเทศ, ปริมาณน้ำในเขื่อน, น้ำในเขื่อน, สถานการณ์น้ำ, กรมชลประทาน, เขื่อนภูมิพล, เขื่อนสิริกิติ์, เขื่อนศรีนครินทร์, เขื่อนวชิราลงกรณ, เช็กน้ำท่วม, ระบายน้ำ">
@@ -14,20 +14,20 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://ollii1725-png.github.io/damsthailand/">
 
-    <!-- 2. Open Graph / Facebook / LINE -->
+   
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ollii1725-png.github.io/damsthailand/">
     <meta property="og:title" content="ปริมาณน้ำในเขื่อนทั่วประเทศ (Dam Tracker)">
     <meta property="og:description" content="เช็กปริมาณน้ำในเขื่อน Real-time ดูน้ำไหลเข้า-ระบายออก และกล้อง CCTV หน้าเขื่อนสดๆ ได้ทันที">
     <meta property="og:image" content="https://ollii1725-png.github.io/damsthailand/preview-cover.png">
 
-    <!-- 3. Twitter Card -->
+    
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ปริมาณน้ำในเขื่อนทั่วประเทศ">
     <meta name="twitter:description" content="เช็กปริมาณน้ำในเขื่อนหลักทั่วไทย Real-time พร้อมแผนที่ปฏิสัมพันธ์ และกล้อง CCTV">
     <meta name="twitter:image" content="https://ollii1725-png.github.io/damsthailand/preview-cover.png">
 
-    <!-- 4. Schema.org Structured Data -->
+    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -57,7 +57,7 @@
             background-color: #f8fafc;
         }
 
-        /* เอฟเฟกต์กระพริบ 3 ครั้งสำหรับหมุดอันตราย (สีแดง) */
+        
         .animate-blink-3-times {
             animation: blinkRed 1.2s ease-in-out;
             animation-iteration-count: 3;
@@ -78,7 +78,7 @@
      </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
-    <!-- ==================== NAVBAR & HEADER ==================== -->
+    
      <header class="bg-gradient-to-r from-blue-700 via-sky-600 to-cyan-600 text-white shadow-lg sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-3">
              <div class="flex items-center space-x-3">
@@ -128,7 +128,7 @@
         </div>
      </header>
     
-    <!-- ==================== MAIN CONTENT ==================== -->
+   
      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full space-y-6">
         <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-2 rounded-2xl shadow-sm border border-slate-200/80">
              <div class="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
@@ -151,7 +151,7 @@
             </div>
         </div>
 
-        <!-- KPI Cards -->
+        
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shrink-0">
@@ -191,7 +191,7 @@
             </div>
         </div>
 
-        <!-- FILTER & SEARCH CONTROLS -->
+       
         <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                  <div class="relative">
@@ -253,7 +253,7 @@
             </div>
         </div>
 
-        <!-- MAP VIEW -->
+        
         <div id="view-map-container" class="space-y-3">
             <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200/80">
@@ -282,7 +282,7 @@
             </div>
         </div>
 
-        <!-- GRID VIEW -->
+        
         <div id="view-grid-container" class="hidden">
             <div id="dams-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"></div>
              <div id="no-results" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
@@ -292,7 +292,7 @@
              </div>
         </div>
 
-        <!-- CHART VIEW -->
+        
         <div id="view-chart-container" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
              <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
                 <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
@@ -314,7 +314,7 @@
              </div>
         </div>
 
-        <!-- MODAL DETAIL -->
+       
         <div id="dam-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
          <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full border border-slate-100 overflow-hidden transform transition-all duration-300 scale-100">
              <div class="bg-gradient-to-r from-blue-700 to-sky-600 text-white p-5 sm:p-6 flex justify-between items-start">
@@ -404,7 +404,7 @@
          </div>
      </div>
 
-     <!-- FOOTER -->
+    
     <footer class="bg-slate-900 text-slate-400 text-xs py-5 mt-auto border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-center sm:text-left space-y-1">
@@ -424,7 +424,7 @@
             </div>
         </div>
 
-        <!-- DONATE MODAL -->
+        
         <div id="donate-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden text-center p-6 space-y-4 relative border border-slate-100">
                 <button onclick="closeDonateModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full flex items-center justify-center transition">
@@ -451,9 +451,9 @@
     </footer>
     </main>
 
-    <!-- ==================== JAVASCRIPT ==================== -->
+    
     <script>
-        // Helper Functions (จัดวางไว้ส่วนบนสุดเพื่อเรียกใช้งานได้อย่างปลอดภัย)
+        
         function formatVolume(val, unit = "") {
             if (val === null || val === undefined) {
                 return `<span class="text-slate-400 font-normal">N/A</span>`;
@@ -786,7 +786,7 @@
             renderMapMarkers(activeFilteredDams);
         }
 
-        // 7. ฟังก์ชันวาดการ์ดเขื่อน (Grid View) - ปรับปรุงรองรับ null 100%
+        
         function renderGrid(dams) {
             const container = document.getElementById('dams-grid');
             const noResults = document.getElementById('no-results');
@@ -850,7 +850,7 @@
             }).join('');
         }
 
-        // 8. ฟังก์ชันวาดกราฟสถิติ Chart.js
+        
         function renderCharts(dams) {
             const ctxBar = document.getElementById('bar-chart-canvas').getContext('2d');
             if (barChart) barChart.destroy();
@@ -905,7 +905,7 @@
             });
         }
 
-        // 9. ฟังก์ชันอัปเดตสถิติ KPI ภาพรวม
+       
         function updateKPIs(dams) {
             document.getElementById('kpi-total-dams').textContent = `${dams.length} แห่ง`;
             
@@ -937,7 +937,7 @@
             document.getElementById('kpi-warning-count').textContent = `${warningCount} แห่ง`;
         }
 
-        // 10. ฟังก์ชันค้นหาและกรองข้อมูล
+        
         function applyFilters() {
             const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
             const regionVal = document.getElementById('region-filter').value;
@@ -970,7 +970,7 @@
             renderCharts(filtered);
         }
 
-        // 11. ฟังก์ชันสลับแท็บมุมมอง
+        
         function switchView(viewName) {
             document.getElementById('view-map-container').classList.add('hidden');
             document.getElementById('view-grid-container').classList.add('hidden');
@@ -993,7 +993,7 @@
             }
         }
 
-        // 12. ฟังก์ชันเปิด/ปิด Pop-up Modal
+        
         function openModal(damId) {
             const dam = damsData.find(d => String(d.id) === String(damId));
             if (!dam) return;
