@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <!-- Author Credit -->
     <!-- by Mr.Sumet Prapasathit -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    
+    <!-- 1. Primary Title & Description (ส่งผลตรงต่อการติดอันดับบน Google) -->
     <title>ปริมาณน้ำในเขื่อนทั่วประเทศ</title>
     <meta name="description" content="เช็กปริมาณน้ำในเขื่อนทั่วประเทศแบบ Real-time ข้อมูลจริงจากกรมชลประทาน ดูเปอร์เซ็นต์น้ำ น้ำไหลเข้า-ระบายออกประจำวัน ภาพกล้อง CCTV สภาพหน้าเขื่อน และแผนที่ปฏิสัมพันธ์">
     <meta name="keywords" content="ปริมาณน้ำในเขื่อนทั่วประเทศ, ปริมาณน้ำในเขื่อน, น้ำในเขื่อน, สถานการณ์น้ำ, กรมชลประทาน, เขื่อนภูมิพล, เขื่อนสิริกิติ์, เขื่อนศรีนครินทร์, เขื่อนวชิราลงกรณ, เช็กน้ำท่วม, ระบายน้ำ">
@@ -14,20 +14,20 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://ollii1725-png.github.io/damsthailand/">
 
-    
+    <!-- 2. Open Graph / Facebook / LINE -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ollii1725-png.github.io/damsthailand/">
     <meta property="og:title" content="ปริมาณน้ำในเขื่อนทั่วประเทศ (Dam Tracker)">
     <meta property="og:description" content="เช็กปริมาณน้ำในเขื่อน Real-time ดูน้ำไหลเข้า-ระบายออก และกล้อง CCTV หน้าเขื่อนสดๆ ได้ทันที">
     <meta property="og:image" content="https://ollii1725-png.github.io/damsthailand/preview-cover.png">
 
-    
+    <!-- 3. Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ปริมาณน้ำในเขื่อนทั่วประเทศ">
     <meta name="twitter:description" content="เช็กปริมาณน้ำในเขื่อนหลักทั่วไทย Real-time พร้อมแผนที่ปฏิสัมพันธ์ และกล้อง CCTV">
     <meta name="twitter:image" content="https://ollii1725-png.github.io/damsthailand/preview-cover.png">
 
-    
+    <!-- 4. Schema.org Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -44,33 +44,23 @@
     }
     </script>
 
-
-   
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-   
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
-    
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    
      <style>
-        body
-            {
+        body {
             font-family: 'Noto Sans Thai' , sans-serif;
             background-color: #f8fafc;
         }
 
-        
+        /* เอฟเฟกต์กระพริบ 3 ครั้งสำหรับหมุดอันตราย (สีแดง) */
         .animate-blink-3-times {
             animation: blinkRed 1.2s ease-in-out;
-            animation-iteration-count: 3; 
+            animation-iteration-count: 3;
         }
 
         @keyframes blinkRed {
@@ -80,20 +70,17 @@
                 filter: brightness(1);
             }
             50% {
-                transform: scale(1.15); 
-                box-shadow: 0 0 20px 8px rgba(239, 68, 68, 0.7); 
-                filter: brightness(1.25); 
+                transform: scale(1.15);
+                box-shadow: 0 0 20px 8px rgba(239, 68, 68, 0.7);
+                filter: brightness(1.25);
             }
         }
      </style>
-
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex-col">
-    
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+    <!-- ==================== NAVBAR & HEADER ==================== -->
      <header class="bg-gradient-to-r from-blue-700 via-sky-600 to-cyan-600 text-white shadow-lg sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-3">
-           
-           
              <div class="flex items-center space-x-3">
                 <div class="bg-white/20 p-2.5 rounded-2xl backdrop-blur-sm border border-white/30 flex items-center justify-center text-white">
                     <i class="fa-solid font-bold fa-water text-2xl"></i>
@@ -108,122 +95,82 @@
                 </div>
              </div>
 
-             
             <div class="flex items-center space-x-2 text-xs">
-                
-                
                 <div class="bg-black/20 backdrop-blur-md px-2.5 sm:px-3 py-1.5 rounded-full border border-white/20 flex items-center gap-1.5 shrink-0">
                     <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span class="text-cyan-50 font-medium whitespace-nowrap">อัปเดต: <span id="last-update-time">วันนี้ 08:00 น.</span></span>
                 </div>
 
-                
                 <div class="relative group">
-                    
                     <button class="bg-white/10 hover:bg-white/25 border border-white/30 text-white px-2.5 sm:px-3 py-1.5 rounded-lg transition duration-200 flex items-center gap-1.5 font-medium active:scale-95 whitespace-nowrap" title="เครื่องมือและโปรเจกต์สภาพอากาศ">
                         <i class="fa-solid fa-cloud-sun text-amber-300 text-sm"></i>
                         <span class="hidden sm:inline">เครื่องมือสภาพอากาศ</span>
                         <i class="fa-solid fa-chevron-down text-[10px] text-slate-300 transition-transform group-hover:rotate-180"></i>
                     </button>
 
-                    
                     <div class="absolute right-0 top-full pt-2 w-56 hidden group-hover:block transition duration-200 z-50">
                         <div class="bg-slate-800/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-700/80 py-2">
                             <div class="px-3 py-1.5 border-b border-slate-700/60 mb-1">
                                 <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">โปรเจกต์ในเครือ (Ecosystem)</p>
                             </div>
-
-                           
                             <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-cyan-300 bg-cyan-950/40 font-semibold border-l-2 border-cyan-400">
                                 <i class="fa-solid fa-water w-4 text-center"></i>
                                 <span>ติดตามน้ำในเขื่อน (Dam Tracker)</span>
                             </a>
-
-                            
                             <a href="https://ollii1725-png.github.io/sun-map/" target="_blank" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-300 hover:text-amber-300 hover:bg-slate-700/50 transition">
                                 <i class="fa-solid fa-sun w-4 text-center text-amber-400"></i>
                                 <span>ติดตามดวงอาทิตย์ (Sun Tracker)</span>
                             </a>
-
-                            
-                            <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-400 hover:bg-slate-700/30 transition opacity-75 cursor-not-allowed" title="กำลังพัฒนา">
-                                <i class="fa-solid fa-cloud-bolt w-4 text-center text-indigo-400"></i>
-                                <span>เรดาร์พายุและฝน (Soon)</span>
-                            </a>
-
-                            
-                            <a href="#" class="flex items-center gap-2.5 px-3 py-2 text-xs text-slate-400 hover:bg-slate-700/30 transition opacity-75 cursor-not-allowed" title="กำลังพัฒนา">
-                                <i class="fa-solid fa-smog w-4 text-center text-rose-400"></i>
-                                <span>ดัชนีฝุ่น PM2.5 (Soon)</span>
-                            </a>
                         </div>
                     </div>
                 </div>
-
-                
-
             </div>
         </div>
      </header>
     
-   
+    <!-- ==================== MAIN CONTENT ==================== -->
      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full space-y-6">
-        
         <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-2 rounded-2xl shadow-sm border border-slate-200/80">
-           
              <div class="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
-               
                  <button id="tab-map" onclick="switchView('map')" class="view-tab bg-blue-600 text-white font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm shadow-sm">
                     <i class="fa-solid fa-map-location-dot"></i>
                     <span>มุมมองแผนที่</span>
                  </button>
-
-                
                  <button id="tab-grid" onclick="switchView('grid')" class="view-tab text-slate-600 hover:text-blue-600 hover:bg-slate-100 font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm">
                     <i class="fa-solid fa-table-cells text-slate-500"></i>
                     <span>รายงานเขื่อน</span> 
                  </button>
-
-               
                  <button id="tab-chart" onclick="switchView('chart')" class="view-tab text-slate-600 hover:text-blue-600 hover:bg-slate-100 font-medium px-4 py-2.5 rounded-xl transition duration-200 flex items-center gap-2 text-sm">
                     <i class="fa-solid fa-chart-pie text-slate-500"></i>
                     <span>กราฟสรุปสถิติ</span>
                  </button>
              </div>
-
-           
             <div class="text-xs text-slate-500 hidden lg:flex items-center gap-1.5">
                 <i class="fa-solid fa-circle-info text-blue-500"></i>
-                    <span>เนื่องจากดึงข้อมูลจาก api กรมชลประทาน ข้อมูลจะครบทุกสถานี เวลา 09:00น.</span>
+                <span>เนื่องจากดึงข้อมูลจาก api กรมชลประทาน ข้อมูลจะครบทุกสถานี เวลา 09:45น.</span>
             </div>
         </div>
 
-       
+        <!-- KPI Cards -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-
-           
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shrink-0">
                     <i class="fa-solid fa-database"></i>
                 </div>
                 <div>
                     <p class="text-xs font-medium text-slate-500">เขื่อนที่ติดตาม</p>
-                    <p id="kpi-total-dams" class="text-xl sm:text-2xl font-bold text-slate-800">17 แห่ง</p>
+                    <p id="kpi-total-dams" class="text-xl sm:text-2xl font-bold text-slate-800">0 แห่ง</p>
                 </div>
             </div>
-
-          
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl shrink-0">
                     <i class="fa-solid fa-droplet"></i>
                 </div>
                 <div>
                     <p class="text-xs font-medium text-slate-500">ปริมาณน้ำรวมเฉลี่ย</p>
-                    <p id="kpi-avg-percent" class="text-xl sm:text-2xl font-bold text-sky-600">68%</p>
+                    <p id="kpi-avg-percent" class="text-xl sm:text-2xl font-bold text-sky-600">0%</p>
                 </div>
             </div>
-
-           
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl shrink-0">
                     <i class="fa-solid fa-circle-check"></i>
@@ -233,8 +180,6 @@
                     <p id="kpi-normal-count" class="text-xl sm:text-2xl font-bold text-emerald-600">0 แห่ง</p>
                 </div>
             </div>
-
-            
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex items-center gap-3.5">
                 <div class="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl shrink-0">
                     <i class="fa-solid fa-triangle-exclamation"></i>
@@ -244,14 +189,11 @@
                     <p id="kpi-warning-count" class="text-xl sm:text-2xl font-bold text-rose-600">0 แห่ง</p>
                 </div>
             </div>
-
         </div>
 
-        
+        <!-- FILTER & SEARCH CONTROLS -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-
-               
                  <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -259,8 +201,6 @@
                     <input type="text" id="search-input" oninput="applyFilters()" placeholder="ค้นหาชื่อเขื่อน หรือ จังหวัด..."
                     class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition duration-200">
                  </div>
-
-                
                  <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-solid fa-compass"></i>
@@ -279,8 +219,6 @@
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </div>
                  </div>
-
-                
                  <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-solid fa-filter"></i>
@@ -298,8 +236,6 @@
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </div>
                  </div>
-
-                
                  <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-solid fa-arrow-down-short-wide"></i>
@@ -314,18 +250,12 @@
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </div>
                  </div>
-
             </div>
         </div>
 
-    
-
-    
+        <!-- MAP VIEW -->
         <div id="view-map-container" class="space-y-3">
-           
             <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs">
-                
-               
                 <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200/80">
                     <button onclick="setMapMode('percent')" id="map-mode-percent" class="px-3 py-1.5 rounded-lg font-semibold transition bg-blue-600 text-white shadow-sm flex items-center gap-1">
                         <i class="fa-solid fa-droplet"></i>
@@ -340,8 +270,6 @@
                         <span>น้ำระบายออกวันนี้</span>
                     </button>
                 </div>
-
-                
                 <div id="map-legend-items" class="flex flex-wrap items-center gap-3 sm:gap-4">
                     <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span> วิกฤต (&lt;30% / &gt;100%)</span>
                     <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span> เฝ้าระวัง (30-50% / 85-100%)</span>
@@ -349,21 +277,14 @@
                     <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> ปกติ (50-70%)</span>
                 </div>
             </div>
-
-            
             <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden relative">
                 <div id="leaflet-map" class="w-full h-[520px] sm:h-[600px] rounded-xl z-10"></div>
             </div>
         </div>
 
-   
+        <!-- GRID VIEW -->
         <div id="view-grid-container" class="hidden">
-            <div id="dams-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                
-
-            </div>
-
-           
+            <div id="dams-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"></div>
              <div id="no-results" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
                 <i class="fa-solid fa-water-lower text-4xl text-slate-300 mb-3"></i>
                 <p class="text-slate-500 text-lg font-medium">ไม่พบข้อมูลเขื่อนที่คุณค้นหา</p>
@@ -371,10 +292,8 @@
              </div>
         </div>
 
-   
+        <!-- CHART VIEW -->
         <div id="view-chart-container" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-5">
-            
-           
              <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
                 <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-chart-column text-blue-600"></i>
@@ -384,8 +303,6 @@
                     <canvas id="bar-chart-canvas"></canvas>
                 </div>
              </div>
-
-           
              <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
                 <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-chart-pie text-blue-600"></i>
@@ -397,17 +314,13 @@
              </div>
         </div>
 
-   
-     <div id="dam-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-
-        
+        <!-- MODAL DETAIL -->
+        <div id="dam-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
          <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full border border-slate-100 overflow-hidden transform transition-all duration-300 scale-100">
-
-           
              <div class="bg-gradient-to-r from-blue-700 to-sky-600 text-white p-5 sm:p-6 flex justify-between items-start">
                 <div>
                     <div class="flex items-center gap-2 mb-1">
-                        <span id="modal-region-badge" class="bg-white/20 text-white text-xs px-2.5 py-0.5 rounded-full backdrop-blur-md"> ภาคเหนือ</span>
+                        <span id="modal-region-badge" class="bg-white/20 text-white text-xs px-2.5 py-0.5 rounded-full backdrop-blur-md">ภาคเหนือ</span>
                         <span id="modal-status-badge" class="bg-emerald-500/80 text-white text-xs px-2.5 py-0.5 rounded-full font-medium">ปกติ</span>
                     </div>
                     <h2 id="modal-dam-name" class="text-2xl font-bold">เขื่อนภูมิพล</h2>
@@ -419,11 +332,7 @@
                     <i class="fa-solid fa-xmark text-xl"></i>
                  </button>
              </div>
-
-           
              <div class="p-5 sm:p-6 space-y-5">
-
-               
                  <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-2">
                     <div class="flex justify-between items-center text-sm font-semibold">
                         <span class="text-slate-700">ระดับน้ำปัจจุบัน</span>
@@ -433,8 +342,6 @@
                         <div id="modal-progress-bar" class="h-full bg-blue-500 transition-all duration-500 rounded-full" style="width: 0%"></div>
                      </div>
                  </div>
-
-                
                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
                     <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-100">
                         <p class="text-xs text-slate-500 font-medium">ความจุสูงสุด</p>
@@ -457,21 +364,13 @@
                         <p class="text-[10px] text-slate-400">ล้าน ลบ.ม./วัน</p>
                     </div>
                  </div>
-
-               
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    
-                    
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1 flex flex-col justify-start">
                         <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
                             <i class="fa-solid fa-clipboard-list text-blue-600"></i> ข้อเสนอแนะการบริหารจัดการน้ำ
                         </h4>
-                        <p id="modal-recommendation" class="text-sm text-slate-700 leading-relaxed pt-1">
-                            -
-                        </p>
+                        <p id="modal-recommendation" class="text-sm text-slate-700 leading-relaxed pt-1">-</p>
                     </div>
-
-                    
                     <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 space-y-2">
                         <div class="flex items-center justify-between">
                             <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
@@ -482,19 +381,12 @@
                                 <span>อัปเดตภาพ</span>
                             </button>
                         </div>
-
-                        
                         <div class="rounded-xl overflow-hidden bg-slate-900 aspect-video relative border border-slate-200 shadow-inner flex items-center justify-center">
-                            <!-- รูปภาพ CCTV (แสดงเฉพาะเมื่อมี URL) -->
                             <img id="dam-cctv-img" src="" alt="CCTV เขื่อน Real-time" class="w-full h-full object-cover hidden">
-                            
-                           
                             <div id="cctv-live-badge" class="absolute top-2 left-2 bg-black/60 backdrop-blur-md text-white text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 border border-white/20 hidden">
                                 <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></span>
                                 <span>LIVE CCTV</span>
                             </div>
-
-                            
                             <div id="cctv-placeholder" class="text-center p-4 text-slate-400 space-y-1">
                                 <i class="fa-solid fa-video-slash text-2xl text-slate-500 mb-1"></i>
                                 <p class="text-xs font-medium text-slate-300">ไม่มีสัญญาณกล้อง CCTV</p>
@@ -502,26 +394,19 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-                 
              </div>
-
-            
              <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 text-left">
                 <button onclick="closeModal()" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-medium rounded-xl transition duration-200">
                     ปิดหน้าต่าง
                 </button>
              </div>
-
          </div>
      </div>
 
-    
+     <!-- FOOTER -->
     <footer class="bg-slate-900 text-slate-400 text-xs py-5 mt-auto border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            
-           
             <div class="text-center sm:text-left space-y-1">
                 <p class="flex items-center justify-center sm:justify-start gap-2 text-slate-300 font-medium">
                     <i class="fa-solid fa-water text-cyan-400"></i>
@@ -531,54 +416,58 @@
                     Developed by Mr.Sumet Prapasathit | ollii1725@gmail.com
                 </p>
             </div>
-
-           
             <div class="shrink-0">
                 <button onclick="openDonateModal()" class="bg-gradient-to-r from-amber-500 via-rose-500 to-pink-500 hover:from-amber-600 hover:to-pink-600 text-white font-medium text-xs px-4 py-2 rounded-xl shadow-md transition duration-200 flex items-center gap-2 active:scale-95 border border-white/20" title="ร่วมสนับสนุนผู้พัฒนาเว็บไซต์">
                     <i class="fa-solid fa-heart text-white animate-pulse"></i>
                     <span>ซัพพอร์ตเรา (Donate)</span>
                 </button>
             </div>
-
         </div>
 
-        
+        <!-- DONATE MODAL -->
         <div id="donate-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden text-center p-6 space-y-4 relative border border-slate-100">
-               
                 <button onclick="closeDonateModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full flex items-center justify-center transition">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
-
                 <div class="w-12 h-12 bg-rose-100 text-rose-500 rounded-2xl flex items-center justify-center text-2xl mx-auto">
                     <i class="fa-solid fa-heart"></i>
                 </div>
-
                 <div>
                     <h3 class="text-lg font-bold text-slate-800">สนับสนุนการพัฒนา</h3>
                     <p class="text-xs text-slate-500 mt-1 leading-relaxed">
                         เงินบริจาคของท่านจะเป็นกำลังใจในการพัฒนาฟีเจอร์ใหม่ๆ ครับ
                     </p>
                 </div>
-
-                
                 <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 inline-block">
                     <img src="https://lh3.googleusercontent.com/d/1jh3-gqtSdfnq3qdjjEZLG4M3b-RwpIWo" alt="PromptPay QR Code" class="w-48 h-48 rounded-xl mx-auto shadow-sm">
                     <p class="text-[11px] font-semibold text-slate-600 mt-2">พร้อมเพย์ / PromptPay</p>
                 </div>
-
                 <button onclick="closeDonateModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium py-2.5 rounded-xl transition">
                     ปิดหน้าต่าง
                 </button>
             </div>
         </div>
     </footer>
-     
     </main>
-   
-   
+
+    <!-- ==================== JAVASCRIPT ==================== -->
     <script>
-      
+        // Helper Functions (จัดวางไว้ส่วนบนสุดเพื่อเรียกใช้งานได้อย่างปลอดภัย)
+        function formatVolume(val, unit = "") {
+            if (val === null || val === undefined) {
+                return `<span class="text-slate-400 font-normal">N/A</span>`;
+            }
+            return `${val.toLocaleString()} ${unit}`.trim();
+        }
+
+        function getDamPercent(dam) {
+            if (dam.current === null || dam.capacity === null || dam.capacity === 0) {
+                return null;
+            }
+            return Math.round((dam.current / dam.capacity) * 100);
+        }
+
         const damCoordsMap = {
             "เขื่อนแม่กวงอุดมธารา": { lat: 18.9158, lng: 99.1417, province: "เชียงใหม่" },
             "เขื่อนกิ่วลม": { lat: 18.5147, lng: 99.6203, province: "ลำปาง" },
@@ -617,34 +506,6 @@
             "เขื่อนบางลาง": { lat: 6.1553, lng: 101.2725, province: "ยะลา" }
         };
 
-       
-        let damsData = [];
-        let map = null;
-        let mapMarkers = [];
-        let barChart = null;
-        let donutChart = null;
-        let activeFilteredDams = [];
-        let currentMapMode = "percent"; // โหมดแผนที่ปัจจุบัน: 'percent' | 'inflow' | 'outflow'
-
-
-        
-        function getFlowStatus(val, maxVal) {
-            if (!val || val <= 0) {
-                return { hexColor: "#94a3b8", label: "ไม่มีการไหล/ระบาย" }; // สีเทา
-            }
-            const ratio = val / (maxVal || 1);
-            if (ratio >= 0.70) {
-                return { hexColor: "#ef4444", label: "ปริมาณสูงมาก (วิกฤต/เฝ้าระวัง)" }; // สีแดง
-            } else if (ratio >= 0.35) {
-                return { hexColor: "#f59e0b", label: "ปริมาณปานกลาง-สูง" }; // สีส้ม
-            } else if (ratio >= 0.10) {
-                return { hexColor: "#eab308", label: "ปริมาณปานกลาง" }; // สีเหลือง
-            } else {
-                return { hexColor: "#10b981", label: "ปริมาณเล็กน้อย" }; // สีเขียว
-            }
-        }
-
-        
         const damCctvMap = {
             "เขื่อนสิริกิติ์": "https://egatwater.egat.co.th/assets/CCTV/images/SK/1.jpg?t=1791371911923",
             "เขื่อนภูมิพล": "https://egatwater.egat.co.th/assets/CCTV/images/BB/1.jpg?t=1791373360215",
@@ -654,33 +515,45 @@
             "เขื่อนบางลาง":"https://egatwater.egat.co.th/assets/CCTV/images/BLG/1.jpg?t=1791450420305",
             "เขื่อนอุบลรัตน์":"https://egatwater.egat.co.th/assets/CCTV/images/UR/1.jpg?t=1791450852813",
             "เขื่อนน้ำพุง":"https://egatwater.egat.co.th/assets/CCTV/images/NP/1.jpg?t=1791450900319"
-           
         };
 
-       
+        let damsData = [];
+        let map = null;
+        let mapMarkers = [];
+        let barChart = null;
+        let donutChart = null;
+        let activeFilteredDams = [];
+        let currentMapMode = "percent";
         let currentCctvUrl = "";
 
-        
+        function getFlowStatus(val, maxVal) {
+            if (!val || val <= 0) {
+                return { hexColor: "#94a3b8", label: "ไม่มีการไหล/ระบาย" };
+            }
+            const ratio = val / (maxVal || 1);
+            if (ratio >= 0.70) {
+                return { hexColor: "#ef4444", label: "ปริมาณสูงมาก (วิกฤต/เฝ้าระวัง)" };
+            } else if (ratio >= 0.35) {
+                return { hexColor: "#f59e0b", label: "ปริมาณปานกลาง-สูง" };
+            } else if (ratio >= 0.10) {
+                return { hexColor: "#eab308", label: "ปริมาณปานกลาง" };
+            } else {
+                return { hexColor: "#10b981", label: "ปริมาณเล็กน้อย" };
+            }
+        }
+
         async function fetchRIDData() {
             const apiUrl = 'https://app.rid.go.th/reservoir/api/dam/public';
-            
             try {
-               
                 const response = await fetch(apiUrl);
                 if (!response.ok) throw new Error('Network response was not ok');
-                
                 const ridJson = await response.json();
                 let loadedDams = [];
 
-               
                 ridJson.data.forEach(regionGroup => {
-                   
                     const cleanRegion = regionGroup.region.replace('ภาค', '');
-
                     regionGroup.dam.forEach(dam => {
-                      
                         const coords = damCoordsMap[dam.name] || { lat: 13.7500, lng: 100.5000, province: "ไม่ระบุ" };
-
                         loadedDams.push({
                             id: dam.id,
                             name: dam.name,
@@ -688,33 +561,35 @@
                             region: cleanRegion,
                             lat: coords.lat,
                             lng: coords.lng,
-                            capacity: dam.storage || 0,       
-                            current: dam.volume || 0,         
-                            inflow: dam.inflow || 0,           
-                            outflow: dam.outflow || 0         
+                            capacity: (dam.storage !== null && dam.storage !== undefined) ? dam.storage : null,
+                            current: (dam.volume !== null && dam.volume !== undefined) ? dam.volume : null,
+                            inflow: (dam.inflow !== null && dam.inflow !== undefined) ? dam.inflow : null,
+                            outflow: (dam.outflow !== null && dam.outflow !== undefined) ? dam.outflow : null
                         });
                     });
                 });
 
-                
                 damsData = loadedDams;
                 activeFilteredDams = [...damsData];
-
-                
                 document.getElementById('last-update-time').textContent = `${ridJson.date} (ข้อมูลจริง RID)`;
-
-                
                 applyFilters();
-
             } catch (error) {
                 console.error("ไม่สามารถเชื่อมต่อ API กรมชลประทานได้:", error);
                 alert("เกิดข้อผิดพลาดในการโหลดข้อมูลจาก API กรมชลประทาน");
             }
         }
 
-       
         function getWaterStatus(percent) {
-            if (percent < 30) {
+            if (percent === null || percent === undefined) {
+                return {
+                    label: "N/A",
+                    badgeBg: "bg-slate-400",
+                    textColor: "text-slate-500",
+                    hexColor: "#94a3b8",
+                    filterGroup: "unknown",
+                    recommendation: "อยู่ระหว่างรอการอัปเดตข้อมูลจากสถานี"
+                 };
+            } else if (percent < 30) {
                 return {
                     label: "วิกฤตน้ำน้อย",
                     badgeBg: "bg-red-500",
@@ -771,13 +646,11 @@
             }
         }
 
-       
         window.addEventListener('DOMContentLoaded', () => {
             initMap();
-            fetchRIDData(); 
+            fetchRIDData();
         });
 
-        
         function initMap() {
             map = L.map('leaflet-map').setView([13.75, 100.50], 6);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -786,19 +659,14 @@
             }).addTo(map);
         }
 
-        
-       
         function renderMapMarkers(dams) {
             if (!map) return;
-
             mapMarkers.forEach(marker => map.removeLayer(marker));
             mapMarkers = [];
 
-           
             const maxInflow = Math.max(...damsData.map(d => d.inflow || 0), 1);
             const maxOutflow = Math.max(...damsData.map(d => d.outflow || 0), 1);
 
-            
             const legendContainer = document.getElementById("map-legend-items");
             if (legendContainer) {
                 if (currentMapMode === "percent") {
@@ -820,33 +688,23 @@
                 } else if (currentMapMode === "outflow") {
                     legendContainer.innerHTML = `
                         <span class="font-semibold text-slate-500 mr-1">ระดับการระบายน้ำ:</span>
-                        
-                        <span class="flex items-center gap-1.5 cursor-help transition hover:opacity-80" 
-                              title="แนวทางรับมือ (ระบายมากที่สุด / วิกฤต):&#10;1. ขนย้ายสิ่งของขึ้นที่สูงทันที&#10;2. ยกปลั๊กไฟ/ตัดระบบไฟฟ้าชั้นล่าง&#10;3. ติดตามประกาศเตือนภัยจากท้องถิ่นอย่างใกล้ชิด&#10;4. เตรียมกระสอบทรายกั้นน้ำริมตลิ่ง">
+                        <span class="flex items-center gap-1.5 cursor-help transition hover:opacity-80" title="แนวทางรับมือ (ระบายมากที่สุด / วิกฤต):&#10;1. ขนย้ายสิ่งของขึ้นที่สูงทันที&#10;2. ยกปลั๊กไฟ/ตัดระบบไฟฟ้าชั้นล่าง&#10;3. ติดตามประกาศเตือนภัยจากท้องถิ่นอย่างใกล้ชิด&#10;4. เตรียมกระสอบทรายกั้นน้ำริมตลิ่ง">
                             <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span> 
                             <span class="border-b border-dashed border-red-400">ระบายมากที่สุด</span>
                         </span>
-
-                        <span class="flex items-center gap-1.5 cursor-help transition hover:opacity-80" 
-                              title="แนวทางรับมือ (ปานกลาง-สูง):&#10;1. เฝ้าระวังระดับน้ำในลำน้ำและคลองท้ายเขื่อน&#10;2. เตรียมพร้อมย้ายสิ่งของและทรัพย์สินมูลค่าสูงขึ้นที่สูง&#10;3. ตรวจสอบเรือ/เครื่องสูบน้ำให้พร้อมใช้งาน">
+                        <span class="flex items-center gap-1.5 cursor-help transition hover:opacity-80" title="แนวทางรับมือ (ปานกลาง-สูง):&#10;1. เฝ้าระวังระดับน้ำในลำน้ำและคลองท้ายเขื่อน&#10;2. เตรียมพร้อมย้ายสิ่งของและทรัพย์สินมูลค่าสูงขึ้นที่สูง&#10;3. ตรวจสอบเรือ/เครื่องสูบน้ำให้พร้อมใช้งาน">
                             <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span> 
                             <span class="border-b border-dashed border-amber-400">ปานกลาง-สูง</span>
                         </span>
-
-                        <span class="flex items-center gap-1.5 cursor-help transition hover:opacity-80" 
-                              title="แนวทางรับมือ (ปานกลาง):&#10;1. สังเกตการเปลี่ยนแปลงของระดับน้ำริมตลิ่ง&#10;2. หลีกเลี่ยงการลงเล่นน้ำหรือจอดยานพาหนะบริเวณริมน้ำ&#10;3. ตรวจสอบคันกั้นน้ำของชุมชน">
+                        <span class="flex items-center gap-1.5 cursor-help transition hover:opacity-80" title="แนวทางรับมือ (ปานกลาง):&#10;1. สังเกตการเปลี่ยนแปลงของระดับน้ำริมตลิ่ง&#10;2. หลีกเลี่ยงการลงเล่นน้ำหรือจอดยานพาหนะบริเวณริมน้ำ&#10;3. ตรวจสอบคันกั้นน้ำของชุมชน">
                             <span class="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span> 
                             <span class="border-b border-dashed border-yellow-500">ปานกลาง</span>
                         </span>
-
-                        <span class="flex items-center gap-1.5 cursor-help transition hover:opacity-80" 
-                              title="แนวทางรับมือ (เล็กน้อย):&#10;1. สถานการณ์ปกติ การระบายน้ำเพื่อการอุปโภคบริโภคและรักษาระบบนิเวศ&#10;2. สัตว์เลี้ยงและสิ่งกั้นรุกล้ำตลิ่งควรจัดเก็บให้เป็นระเบียบ">
+                        <span class="flex items-center gap-1.5 cursor-help transition hover:opacity-80" title="แนวทางรับมือ (เล็กน้อย):&#10;1. สถานการณ์ปกติ การระบายน้ำเพื่อการอุปโภคบริโภคและรักษาระบบนิเวศ&#10;2. สัตว์เลี้ยงและสิ่งกั้นรุกล้ำตลิ่งควรจัดเก็บให้เป็นระเบียบ">
                             <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> 
                             <span class="border-b border-dashed border-emerald-500">เล็กน้อย</span>
                         </span>
-
-                        <span class="flex items-center gap-1.5 cursor-help transition hover:opacity-80" 
-                              title="ไม่มีการระบายน้ำออกจากเขื่อน ณ วันนี้">
+                        <span class="flex items-center gap-1.5 cursor-help transition hover:opacity-80" title="ไม่มีการระบายน้ำออกจากเขื่อน ณ วันนี้">
                             <span class="w-3 h-3 rounded-full bg-slate-400 inline-block"></span> 
                             <span class="text-slate-500">ไม่ระบาย</span>
                         </span>
@@ -855,28 +713,24 @@
             }
 
             dams.forEach(dam => {
-                const percent = dam.capacity > 0 ? Math.round((dam.current / dam.capacity) * 100) : 0;
+                const percent = getDamPercent(dam);
                 const status = getWaterStatus(percent);
 
                 let badgeText = "";
                 let markerBgColor = "";
 
-                
                 if (currentMapMode === "inflow") {
-                    badgeText = `+${dam.inflow.toLocaleString()} มล.`;
-                    markerBgColor = getFlowStatus(dam.inflow, maxInflow).hexColor;
+                    badgeText = dam.inflow !== null ? `+${dam.inflow.toLocaleString()} มล.` : "N/A";
+                    markerBgColor = dam.inflow !== null ? getFlowStatus(dam.inflow, maxInflow).hexColor : "#94a3b8";
                 } else if (currentMapMode === "outflow") {
-                    badgeText = `-${dam.outflow.toLocaleString()} มล.`;
-                    markerBgColor = getFlowStatus(dam.outflow, maxOutflow).hexColor;
+                    badgeText = dam.outflow !== null ? `-${dam.outflow.toLocaleString()} มล.` : "N/A";
+                    markerBgColor = dam.outflow !== null ? getFlowStatus(dam.outflow, maxOutflow).hexColor : "#94a3b8";
                 } else {
-                    
-                    badgeText = `${percent}%`;
+                    badgeText = percent !== null ? `${percent}%` : "N/A";
                     markerBgColor = status.hexColor;
                 }
 
-               
                 const isRedAlert = (markerBgColor === "#ef4444" || markerBgColor === "#dc2626");
-               
                 const blinkClass = isRedAlert ? "animate-blink-3-times" : "";
 
                 const customIcon = L.divIcon({
@@ -901,10 +755,10 @@
                             <span class="text-xs px-2 py-0.5 rounded text-white ${status.badgeBg}">${status.label}</span>
                         </div>
                         <p class="text-xs text-slate-600">จ.${dam.province} (${dam.region})</p>
-                        <p class="text-xs font-semibold text-blue-600 mt-1">ระดับน้ำ: ${percent}% (${dam.current.toLocaleString()} / ${dam.capacity.toLocaleString()} ล้าน ลบ.ม.)</p>
+                        <p class="text-xs font-semibold text-blue-600 mt-1">ระดับน้ำ: ${percent !== null ? percent + '%' : 'N/A'} (${formatVolume(dam.current)} / ${formatVolume(dam.capacity)} ล้าน ลบ.ม.)</p>
                         <div class="text-[11px] text-slate-500 mt-1.5 pt-1.5 border-t grid grid-cols-2 gap-1">
-                            <span>น้ำเข้าวันนี้: <b class="text-emerald-600">+${dam.inflow.toLocaleString()} มล.</b></span>
-                            <span>ระบายวันนี้: <b class="text-rose-600">-${dam.outflow.toLocaleString()} มล.</b></span>
+                            <span>น้ำเข้าวันนี้: <b class="text-emerald-600">${dam.inflow !== null ? '+' + dam.inflow.toLocaleString() + ' มล.' : 'N/A'}</b></span>
+                            <span>ระบายวันนี้: <b class="text-rose-600">${dam.outflow !== null ? '-' + dam.outflow.toLocaleString() + ' มล.' : 'N/A'}</b></span>
                         </div>
                         <button onclick="openModal('${dam.id}')" class="mt-2.5 w-full bg-blue-600 hover:bg-blue-700 text-white text-xs py-1.5 rounded-lg transition">
                             ดูรายละเอียดเชิงลึก
@@ -917,11 +771,8 @@
             });
         }
 
-        
         function setMapMode(mode) {
             currentMapMode = mode;
-
-            
             ["percent", "inflow", "outflow"].forEach(m => {
                 const btn = document.getElementById(`map-mode-${m}`);
                 if (btn) {
@@ -932,12 +783,10 @@
                     }
                 }
             });
-
-            
             renderMapMarkers(activeFilteredDams);
         }
 
-        
+        // 7. ฟังก์ชันวาดการ์ดเขื่อน (Grid View) - ปรับปรุงรองรับ null 100%
         function renderGrid(dams) {
             const container = document.getElementById('dams-grid');
             const noResults = document.getElementById('no-results');
@@ -950,7 +799,7 @@
 
             noResults.classList.add('hidden');
             container.innerHTML = dams.map(dam => {
-                const percent = dam.capacity > 0 ? Math.round((dam.current / dam.capacity) * 100) : 0;
+                const percent = getDamPercent(dam);
                 const status = getWaterStatus(percent);
 
                 return `
@@ -969,26 +818,26 @@
 
                             <div class="my-4 bg-slate-100 rounded-xl p-3 border border-slate-200/60 relative overflow-hidden flex items-center gap-4">
                                 <div class="w-14 h-20 bg-slate-200 rounded-lg border-2 border-slate-300 relative overflow-hidden shrink-0 flex flex-col justify-end">
-                                    <div class="w-full transition-all duration-700 ${status.badgeBg} opacity-80" style="height: ${Math.min(100, percent)}%"></div>
+                                    <div class="w-full transition-all duration-700 ${status.badgeBg} opacity-80" style="height: ${percent !== null ? Math.min(100, percent) : 0}%"></div>
                                     <div class="absolute inset-0 flex items-center justify-center font-bold text-xs text-slate-800 drop-shadow">
-                                        ${percent}%
+                                        ${percent !== null ? percent + '%' : 'N/A'}
                                     </div>
                                 </div>
                                 <div class="space-y-1 text-xs">
                                     <p class="text-slate-500">ปริมาณน้ำปัจจุบัน:</p>
-                                    <p class="text-base font-bold text-slate-800">${dam.current.toLocaleString()} <span class="text-xs font-normal text-slate-500">ล้าน ลบ.ม.</span></p>
-                                    <p class="text-[11px] text-slate-400">ความจุสูงสุด: ${dam.capacity.toLocaleString()} ล้าน ลบ.ม.</p>
+                                    <p class="text-base font-bold text-slate-800">${formatVolume(dam.current, 'ล้าน ลบ.ม.')}</p>
+                                    <p class="text-[11px] text-slate-400">ความจุสูงสุด: ${formatVolume(dam.capacity, 'ล้าน ลบ.ม.')}</p>
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-2.5 rounded-xl text-center mb-4">
                                 <div>
                                     <p class="text-slate-400 text-[10px]">น้ำไหลเข้าวันนี้</p>
-                                    <p class="font-semibold text-emerald-600">+${dam.inflow.toLocaleString()} <span class="text-[10px]">มล.ลบ.ม.</span></p>
+                                    <p class="font-semibold text-emerald-600">${dam.inflow !== null ? '+' + dam.inflow.toLocaleString() + ' มล.ลบ.ม.' : 'N/A'}</p>
                                 </div>
                                 <div>
                                     <p class="text-slate-400 text-[10px]">น้ำระบายออกวันนี้</p>
-                                    <p class="font-semibold text-rose-600">-${dam.outflow.toLocaleString()} <span class="text-[10px]">มล.ลบ.ม.</span></p>
+                                    <p class="font-semibold text-rose-600">${dam.outflow !== null ? '-' + dam.outflow.toLocaleString() + ' มล.ลบ.ม.' : 'N/A'}</p>
                                 </div>
                             </div>
                         </div>
@@ -1001,7 +850,7 @@
             }).join('');
         }
 
-        
+        // 8. ฟังก์ชันวาดกราฟสถิติ Chart.js
         function renderCharts(dams) {
             const ctxBar = document.getElementById('bar-chart-canvas').getContext('2d');
             if (barChart) barChart.destroy();
@@ -1012,8 +861,8 @@
                     labels: dams.map(d => d.name.replace('เขื่อน', '')),
                     datasets: [{
                         label: 'ระดับน้ำปัจจุบัน (%)',
-                        data: dams.map(d => d.capacity > 0 ? Math.round((d.current / d.capacity) * 100) : 0),
-                        backgroundColor: dams.map(d => getWaterStatus(d.capacity > 0 ? Math.round((d.current / d.capacity) * 100) : 0).hexColor),
+                        data: dams.map(d => getDamPercent(d) || 0),
+                        backgroundColor: dams.map(d => getWaterStatus(getDamPercent(d)).hexColor),
                         borderRadius: 6
                     }]
                 },
@@ -1030,7 +879,8 @@
 
             const statusCounts = { 'วิกฤตน้ำน้อย': 0, 'เฝ้าระวังน้ำน้อย': 0, 'ปกติ': 0, 'น้ำค่อนข้างสูง': 0, 'น้ำมาก/ล้นเขื่อน': 0 };
             dams.forEach(d => {
-                const p = d.capacity > 0 ? Math.round((d.current / d.capacity) * 100) : 0;
+                const p = getDamPercent(d);
+                if (p === null) return;
                 if (p < 30) statusCounts['วิกฤตน้ำน้อย']++;
                 else if (p <= 50) statusCounts['เฝ้าระวังน้ำน้อย']++;
                 else if (p <= 70) statusCounts['ปกติ']++;
@@ -1055,7 +905,7 @@
             });
         }
 
-        
+        // 9. ฟังก์ชันอัปเดตสถิติ KPI ภาพรวม
         function updateKPIs(dams) {
             document.getElementById('kpi-total-dams').textContent = `${dams.length} แห่ง`;
             
@@ -1066,17 +916,20 @@
                 return;
             }
 
-            const totalCapacity = dams.reduce((acc, d) => acc + d.capacity, 0);
-            const totalCurrent = dams.reduce((acc, d) => acc + d.current, 0);
+            const validDams = dams.filter(d => d.capacity !== null && d.current !== null);
+            const totalCapacity = validDams.reduce((acc, d) => acc + d.capacity, 0);
+            const totalCurrent = validDams.reduce((acc, d) => acc + d.current, 0);
             const avgPercent = totalCapacity > 0 ? Math.round((totalCurrent / totalCapacity) * 100) : 0;
 
             let normalCount = 0;
             let warningCount = 0;
 
             dams.forEach(d => {
-                const p = d.capacity > 0 ? Math.round((d.current / d.capacity) * 100) : 0;
-                if (p >= 50 && p <= 70) normalCount++;
-                else if (p < 30 || p > 85) warningCount++;
+                const p = getDamPercent(d);
+                if (p !== null) {
+                    if (p >= 50 && p <= 70) normalCount++;
+                    else if (p < 30 || p > 85) warningCount++;
+                }
             });
 
             document.getElementById('kpi-avg-percent').textContent = `${avgPercent}%`;
@@ -1084,7 +937,7 @@
             document.getElementById('kpi-warning-count').textContent = `${warningCount} แห่ง`;
         }
 
-        
+        // 10. ฟังก์ชันค้นหาและกรองข้อมูล
         function applyFilters() {
             const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
             const regionVal = document.getElementById('region-filter').value;
@@ -1095,7 +948,7 @@
                 const matchSearch = dam.name.toLowerCase().includes(searchVal) || dam.province.toLowerCase().includes(searchVal);
                 const matchRegion = regionVal === 'all' || dam.region === regionVal;
                 
-                const percent = dam.capacity > 0 ? Math.round((dam.current / dam.capacity) * 100) : 0;
+                const percent = getDamPercent(dam);
                 const status = getWaterStatus(percent);
                 const matchStatus = statusVal === 'all' || status.filterGroup === statusVal;
 
@@ -1103,9 +956,9 @@
             });
 
             if (sortVal === 'percent-desc') {
-                filtered.sort((a, b) => (b.current / b.capacity) - (a.current / a.capacity));
+                filtered.sort((a, b) => (getDamPercent(b) || -1) - (getDamPercent(a) || -1));
             } else if (sortVal === 'percent-asc') {
-                filtered.sort((a, b) => (a.current / a.capacity) - (b.current / b.capacity));
+                filtered.sort((a, b) => (getDamPercent(a) || 999) - (getDamPercent(b) || 999));
             } else if (sortVal === 'name-asc') {
                 filtered.sort((a, b) => a.name.localeCompare(b.name, 'th'));
             }
@@ -1117,7 +970,7 @@
             renderCharts(filtered);
         }
 
-       
+        // 11. ฟังก์ชันสลับแท็บมุมมอง
         function switchView(viewName) {
             document.getElementById('view-map-container').classList.add('hidden');
             document.getElementById('view-grid-container').classList.add('hidden');
@@ -1140,14 +993,13 @@
             }
         }
 
-       
+        // 12. ฟังก์ชันเปิด/ปิด Pop-up Modal
         function openModal(damId) {
             const dam = damsData.find(d => String(d.id) === String(damId));
             if (!dam) return;
 
-            const percent = dam.capacity > 0 ? Math.round((dam.current / dam.capacity) * 100) : 0;
+            const percent = getDamPercent(dam);
             const status = getWaterStatus(percent);
-            const usableVolume = Math.max(0, dam.current - Math.round(dam.capacity * 0.15));
 
             document.getElementById('modal-dam-name').textContent = dam.name;
             document.getElementById('modal-dam-province').innerHTML = `<i class="fa-solid fa-location-dot"></i> จ.${dam.province} (ภาค${dam.region})`;
@@ -1157,20 +1009,19 @@
             statusBadge.textContent = status.label;
             statusBadge.className = `text-white text-xs px-2.5 py-0.5 rounded-full font-medium ${status.badgeBg}`;
 
-            document.getElementById('modal-percent').textContent = `${percent}%`;
+            document.getElementById('modal-percent').textContent = percent !== null ? `${percent}%` : 'N/A';
             document.getElementById('modal-percent').className = `text-lg font-bold ${status.textColor}`;
             
             const progressBar = document.getElementById('modal-progress-bar');
-            progressBar.style.width = `${Math.min(100, percent)}%`;
+            progressBar.style.width = `${percent !== null ? Math.min(100, percent) : 0}%`;
             progressBar.className = `h-full transition-all duration-500 rounded-full ${status.badgeBg}`;
 
-            document.getElementById('modal-capacity').textContent = dam.capacity.toLocaleString();
-            document.getElementById('modal-current-volume').textContent = dam.current.toLocaleString();
-            document.getElementById('modal-usable-volume').textContent = usableVolume.toLocaleString();
-            document.getElementById('modal-inflow').textContent = dam.inflow.toLocaleString();
+            document.getElementById('modal-capacity').innerHTML = formatVolume(dam.capacity);
+            document.getElementById('modal-current-volume').innerHTML = formatVolume(dam.current);
+            document.getElementById('modal-usable-volume').innerHTML = (dam.current !== null && dam.capacity !== null) ? Math.max(0, dam.current - Math.round(dam.capacity * 0.15)).toLocaleString() : 'N/A';
+            document.getElementById('modal-inflow').innerHTML = formatVolume(dam.inflow);
             document.getElementById('modal-recommendation').textContent = status.recommendation;
 
-           
             const cctvImg = document.getElementById('dam-cctv-img');
             const cctvBadge = document.getElementById('cctv-live-badge');
             const cctvPlaceholder = document.getElementById('cctv-placeholder');
@@ -1179,14 +1030,12 @@
             currentCctvUrl = damCctvMap[dam.name] || "";
 
             if (currentCctvUrl) {
-                
                 cctvImg.src = `${currentCctvUrl}?t=${new Date().getTime()}`;
                 cctvImg.classList.remove('hidden');
                 cctvBadge.classList.remove('hidden');
                 cctvPlaceholder.classList.add('hidden');
                 refreshBtn.classList.remove('hidden');
             } else {
-               
                 cctvImg.src = "";
                 cctvImg.classList.add('hidden');
                 cctvBadge.classList.add('hidden');
@@ -1197,15 +1046,6 @@
             document.getElementById('dam-modal').classList.remove('hidden');
         }
 
-        
-        function refreshCctvImage() {
-            const cctvImg = document.getElementById('dam-cctv-img');
-            if (cctvImg && currentCctvUrl) {
-                cctvImg.src = `${currentCctvUrl}?t=${new Date().getTime()}`;
-            }
-        }
-
-       
         function refreshCctvImage() {
             const cctvImg = document.getElementById('dam-cctv-img');
             if (cctvImg && currentCctvUrl) {
@@ -1217,27 +1057,6 @@
             document.getElementById('dam-modal').classList.add('hidden');
         }
 
-       
-        function simulateWaterChange(changePercent) {
-            damsData.forEach(dam => {
-                const diff = Math.round(dam.capacity * (changePercent / 100));
-                dam.current = Math.max(0, Math.min(dam.capacity * 1.1, dam.current + diff));
-            });
-
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('last-update-time').textContent = `วันนี้ ${timeStr} น. (จำลอง)`;
-
-            applyFilters();
-        }
-
-        
-        function resetSimulatedData() {
-            // โหลดข้อมูลจริงสดๆ จาก API กรมชลประทานอีกครั้ง
-            fetchRIDData();
-        }
-
-        
         function openDonateModal() {
             document.getElementById('donate-modal').classList.remove('hidden');
         }
@@ -1245,10 +1064,6 @@
         function closeDonateModal() {
             document.getElementById('donate-modal').classList.add('hidden');
         }
-
     </script>
-
-   
-     
 </body>
 </html>
